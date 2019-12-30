@@ -1,6 +1,6 @@
-from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.options import Options
 import urllib
 import datetime
 import re
@@ -16,21 +16,25 @@ movie_showtimes = {}
 theater_search = "https://www.google.com/search?q={theater_name}+showtimes"
 
 def get_dates(datelist):
-    date_pattern = r"(\d{2}\:\d{2})"
+    date_pattern = r"\d{1,2}\:\d{2}(?:am|pm)"
     matches = re.findall(date_pattern, datelist)
-    tupled_matches = [tuple(map(int, match.split(":"))) for match in matches]
+    tupled_matches = [list(map(int, match[:-2].split(":")))+[match[-2:]] for match in matches]
+    print(tupled_matches)
+    tupled_matches = [tuple([match[0]+12, match[1]]) if match[2]=='pm' else tuple(match[:2]) for match in tupled_matches]
     print(tupled_matches)
     return tupled_matches
 
 def get_watchlist():
     with open(WATCHLIST_FILE) as f:
-        return set([x[:-1] for x in f.readlines()])
+        return set([(x[:-1]).lower() for x in f.readlines()])
 
-options = webdriver.ChromeOptions()
-options.add_argument("--headless")
-options.add_experimental_option('prefs', {'intl.accept_languages': 'en_GB'})
+options = Options()
+options.headless = True
 
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+profile = webdriver.FirefoxProfile()
+profile.set_preference('intl.accept_languages', 'en_GB')
+
+driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), firefox_profile=profile, options=options)
 
 def get_theaters():
     with open(THEATERS_FILE) as f:
@@ -49,6 +53,11 @@ for theater in theaters:
     show_days = driver.find_elements_by_css_selector("li.tb_l")
     date_s = datetime.datetime.today()
     for i, day in enumerate(show_days):
+        try:
+            x = driver.find_element_by_css_selector("div.hide-focus-ring.iXqz2e.aI3msd.xpdarr.pSO8Ic.vk_arc")
+            x.click()
+        except:
+            pass
         date_s += datetime.timedelta(days=1)
         print(date_s)
         day.click()
@@ -65,10 +74,11 @@ for theater in theaters:
                 else:
                     movie_showtimes[name] = [(movie_theater, date_s.replace(hour=show_time[0], minute=show_time[1]))]
 
+print(movie_showtimes)
 print(watchlist)
 for key,value in movie_showtimes.items():
     print(key)
-    if key in watchlist:
+    if key.lower() in watchlist:
         print(f"You can watch {key} at:")
         for i in value:
             print(f"- {i[0].name} at {i[1]}")
