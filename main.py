@@ -4,6 +4,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 import urllib
 import datetime
 import re
+import collections
+import requests
+
+Theater = collections.namedtuple('Theater', ['name', 'address'])
+movie_showtimes = {}
+theater_search = "https://www.google.com/search?q={theater_name}+showtimes"
 
 def get_dates(datelist):
     date_pattern = r"(\d{2}\:\d{2})"
@@ -18,19 +24,18 @@ options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
 
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-movie_showtimes = {}
-theater_search = "https://www.google.com/search?q={theater_name}+showtimes"
-
 with open("theaters.txt") as f:
     theaters = f.readlines()
-    theaters = [urllib.parse.quote_plus(theater) for theater in theaters]
 
 for theater in theaters:
-    url = theater_search.format(theater_name=theater)
+    url = theater_search.format(theater_name=urllib.parse.quote_plus(theater))
     print(url)
     driver.get(url)
+    address = driver.find_element_by_css_selector("span.LrzXr").text
+    movie_theater = Theater(name=theater[:-1], address=address)
+    print(movie_theater)
+    print("")
     show_days = driver.find_elements_by_css_selector("li.tb_l")
-    print(show_days)
     date_s = datetime.datetime.today()
     for i, day in enumerate(show_days):
         date_s += datetime.timedelta(days=1)
@@ -45,9 +50,9 @@ for theater in theaters:
             show_times = get_dates(datelist)
             for show_time in show_times:
                 if name in movie_showtimes.keys():
-                    movie_showtimes[name].append(date_s.replace(hour=show_time[0], minute=show_time[1]))
+                    movie_showtimes[name].append((movie_theater, date_s.replace(hour=show_time[0], minute=show_time[1])))
                 else:
-                    movie_showtimes[name] = [date_s.replace(hour=show_time[0], minute=show_time[1])]
-    print(movie_showtimes)
+                    movie_showtimes[name] = [(movie_theater, date_s.replace(hour=show_time[0], minute=show_time[1]))]
+print(movie_showtimes)
 
 driver.quit()
