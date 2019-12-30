@@ -8,6 +8,7 @@ These showtimes are compared to a watchlist (extracted from "watchlist.txt")
 -samuel mignot-
 '''
 
+import os
 import datetime
 import re
 import collections
@@ -15,7 +16,6 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
-import os
 
 WATCHLIST_FILE = "watchlist.txt"
 THEATERS_FILE = "theaters.txt"
@@ -48,7 +48,7 @@ def get_theaters():
     with open(THEATERS_FILE) as f:
         return f.readlines()
 
-def main(headless=True):
+def main(headless=True, auto_filter_work=True):
     '''Do X and return a list.'''
     movie_showtimes = {}
     theater_search = "https://www.google.com/search?q={theater_name}+showtimes"
@@ -101,6 +101,7 @@ def main(headless=True):
             date_s += datetime.timedelta(days=1)
     driver.quit()
     print(movie_showtimes)
+    possible_showtimes = {}
     for key, value in movie_showtimes.items():
         print(key)
         if key.lower() in watchlist:
