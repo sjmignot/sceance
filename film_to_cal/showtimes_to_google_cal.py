@@ -29,7 +29,7 @@ def build_and_add_event(service, film, theater, showtime):
     end_time = start_time+datetime.timedelta(hours=int(film.length[0]), minutes=int(film.length[1]))
 
     event = {
-      'summary': f'{film.name} at theater.name',
+      'summary': f'{film.name} at {theater.name}',
       'location': theater.address,
       'start': {
         'dateTime': start_time.isoformat(),
