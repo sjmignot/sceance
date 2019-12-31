@@ -89,8 +89,6 @@ def wait_for_new_window(driver, timeout=10):
 def get_movie_lengths(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_length_dict = {}
-
-
     if os.path.exists(f'{DATA_PATH}film_length.pickle'):
         with open(f'{DATA_PATH}film_length.pickle', 'rb') as flf:
             film_length_dict = pickle.load(flf)
@@ -186,7 +184,7 @@ def get_watchlist_showings(headless=True, auto_filter_work=True):
                         pass
             date_s += datetime.timedelta(days=1)
     driver.quit()
-
+    print(movie_showtimes.keys())
     film_links = { k: v for k, v in film_links.items() if k.lower() in watchlist }
     film_length_dict = get_movie_lengths(film_links)
     possible_showtimes = get_possible_showtimes(movie_showtimes, film_length_dict, watchlist)
