@@ -16,29 +16,17 @@ These showtimes are compared to a watchlist (extracted from "watchlist.txt")
 # internal
 import get_showings
 from get_showings import Film, Theater
-
-# external
-import os
-import datetime
-import re
-import collections
-import time
-import pickle
-import selenium
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.firefox import GeckoDriverManager
-from contextlib import contextmanager
+import showtimes_to_google_cal
+import filter_select_showings
 
 # ------------------- #
 # constants           #
 # ------------------- #
 
 def main(headless=True, auto_filter_work=True):
-    showings = get_showings.main()
-    print(showings)
+    showings = get_showings.get_watchlist_showings()
+    projection_list = filter_select_showings.filter_select_showings(showings)
+    showtimes_to_google_cal.create_projection_events(projection_list)
 
 if __name__ == "__main__":
     main()

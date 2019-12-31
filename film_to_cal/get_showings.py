@@ -136,7 +136,7 @@ def get_possible_showtimes(movie_showtimes, film_length_dict, watchlist):
 # main function          #
 # ---------------------- #
 
-def main(headless=True, auto_filter_work=True):
+def get_watchlist_showings(headless=True, auto_filter_work=True):
     '''Do X and return a list.'''
     theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes"
 
@@ -188,4 +188,4 @@ def main(headless=True, auto_filter_work=True):
     return possible_showtimes
 
 if __name__ == "__main__":
-    main()
+    get_watchlist_showings()
