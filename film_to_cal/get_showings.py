@@ -90,7 +90,6 @@ def get_movie_lengths(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_length_dict = {}
 
-    driver = start_brower(True)
 
     if os.path.exists(f'{DATA_PATH}film_length.pickle'):
         with open(f'{DATA_PATH}film_length.pickle', 'rb') as flf:
@@ -99,6 +98,7 @@ def get_movie_lengths(film_links):
     new_films = { k: v for k, v in film_links.items() if k not in film_length_dict.keys()}
     if(not new_films): return film_length_dict
 
+    driver = start_brower(True)
     for k, url in new_films.items():
         driver.get(url)
         film_details = driver.find_element_by_css_selector(GOOGLE_CSS_SELECTORS['film_length']).text
@@ -179,14 +179,16 @@ def get_watchlist_showings(headless=True, auto_filter_work=True):
 
                 show_times = get_dates(datelist)
                 for show_time in show_times:
-                    possible_showtime = date_s.replace(hour=show_time[0], minute=show_time[1])
-                    movie_showtimes.setdefault(name,[]).append((movie_theater, possible_showtime))
+                    try:
+                        possible_showtime = date_s.replace(hour=show_time[0], minute=show_time[1])
+                        movie_showtimes.setdefault(name,[]).append((movie_theater, possible_showtime))
+                    except:
+                        pass
             date_s += datetime.timedelta(days=1)
     driver.quit()
 
     film_links = { k: v for k, v in film_links.items() if k.lower() in watchlist }
     film_length_dict = get_movie_lengths(film_links)
-
     possible_showtimes = get_possible_showtimes(movie_showtimes, film_length_dict, watchlist)
     return possible_showtimes
 

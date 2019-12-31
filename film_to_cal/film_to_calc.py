@@ -25,6 +25,7 @@ import filter_select_showings
 
 def main(headless=True, auto_filter_work=True):
     showings = get_showings.get_watchlist_showings()
+    print(showings)
     projection_list = filter_select_showings.filter_select_showings(showings)
     print(projection_list)
     showtimes_to_google_cal.create_projection_events(projection_list)
