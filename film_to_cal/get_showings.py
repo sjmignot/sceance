@@ -23,6 +23,7 @@ import re
 import collections
 import time
 import pickle
+from distutils.util import strtobool
 import selenium
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -137,7 +138,7 @@ def get_possible_showtimes(movie_showtimes, film_length_dict, watchlist):
 # main function          #
 # ---------------------- #
 
-def get_watchlist_showings(headless=True, auto_filter_work=True):
+def get_watchlist_showings(headless=False, auto_filter_work=True):
     '''Do X and return a list.'''
     theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes"
 
@@ -163,7 +164,8 @@ def get_watchlist_showings(headless=True, auto_filter_work=True):
                 see_more_button = driver.find_element_by_css_selector(
                     GOOGLE_CSS_SELECTORS['see_more']
                 )
-                driver.execute_script("arguments[0].click();", see_more_button)
+                if not strtobool(see_more_button.get_attribute('aria-expanded')):
+                    driver.execute_script("arguments[0].click();", see_more_button)
             except selenium.common.exceptions.NoSuchElementException:
                 pass
             showings = driver.find_elements_by_css_selector(GOOGLE_CSS_SELECTORS['showings'])
@@ -177,11 +179,8 @@ def get_watchlist_showings(headless=True, auto_filter_work=True):
 
                 show_times = get_dates(datelist)
                 for show_time in show_times:
-                    try:
-                        possible_showtime = date_s.replace(hour=show_time[0], minute=show_time[1])
-                        movie_showtimes.setdefault(name,[]).append((movie_theater, possible_showtime))
-                    except:
-                        pass
+                    possible_showtime = date_s.replace(hour=show_time[0], minute=show_time[1])
+                    movie_showtimes.setdefault(name,[]).append((movie_theater, possible_showtime))
             date_s += datetime.timedelta(days=1)
     driver.quit()
     print(movie_showtimes.keys())
