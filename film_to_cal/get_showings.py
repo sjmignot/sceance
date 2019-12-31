@@ -89,6 +89,9 @@ def wait_for_new_window(driver, timeout=10):
 def get_movie_lengths(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_length_dict = {}
+
+    driver = start_brower(True)
+
     if os.path.exists(f'{DATA_PATH}film_length.pickle'):
         with open(f'{DATA_PATH}film_length.pickle', 'rb') as flf:
             film_length_dict = pickle.load(flf)
