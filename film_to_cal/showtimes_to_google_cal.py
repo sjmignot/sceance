@@ -18,7 +18,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 TIME_ZONE = "Europe/Paris"
 DATA_PATH = 'data/'
 TOKEN_FILE = "token.pickle"
@@ -42,6 +42,7 @@ def build_and_add_event(service, film, theater, showtime):
     }
 
     event = service.events().insert(calendarId='primary', body=event).execute()
+    print('Event created: %s' % (event.get('htmlLink')))
 
 def get_creds():
     creds = None
@@ -61,6 +62,7 @@ def get_creds():
         # Save the credentials for the next run
         with open(DATA_PATH+TOKEN_FILE, 'wb') as token:
             pickle.dump(creds, token)
+    return creds
 
 def create_projection_events(projection_list):
     """Shows basic usage of the Google Calendar API.
