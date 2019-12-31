@@ -31,7 +31,9 @@ GOOGLE_CSS_SELECTORS = {
     "showings": "div.lr_c_fcb.lr-s-stor",
     "film_length": "div.wwUB2c.PZPZlf"
 }
+
 FILM_DETAIL_SEP = '‧'
+DATA_PATH = 'data/'
 
 Theater = collections.namedtuple('Theater', ['name', 'address'])
 Film = collections.namedtuple('Film', ['name','release', 'genre', 'length'])
@@ -47,12 +49,12 @@ def get_dates(datelist):
 
 def get_watchlist():
     '''Reads the watchlist file and returns a set of movies with titles lowercased.'''
-    with open(WATCHLIST_FILE) as f:
+    with open(DATA_PATH+WATCHLIST_FILE) as f:
         return frozenset((x[:-1]).lower() for x in f.readlines())
 
 def get_theaters():
     '''Reads the theaters file and returns a set of theaters.'''
-    with open(THEATERS_FILE) as f:
+    with open(DATA_PATH+THEATERS_FILE) as f:
         return f.readlines()
 
 @contextmanager
@@ -66,8 +68,8 @@ def wait_for_new_window(driver, timeout=10):
 def get_movie_lengths(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_length_dict = {}
-    if os.path.exists('film_length.pickle'):
-        with open('film_length.pickle', 'rb') as flf:
+    if os.path.exists(f'{DATA_PATH}film_length.pickle'):
+        with open(f'{DATA_PATH}film_length.pickle', 'rb') as flf:
             film_length_dict = pickle.load(flf)
 
     new_films = { k: v for k, v in film_links.items() if k not in film_length_dict.keys()}
@@ -86,7 +88,7 @@ def get_movie_lengths(film_links):
         print(cur_film)
         film_length_dict[k] = cur_film
 
-    with open('film_length.pickle', 'wb') as flf:
+    with open(f'{DATA_PATH}film_length.pickle', 'wb') as flf:
         pickle.dump(film_length_dict, flf)
 
     return film_length_dict
