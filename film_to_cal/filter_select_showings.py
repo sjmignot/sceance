@@ -12,7 +12,6 @@ def not_during_work(showing):
     if date.weekday() not in WEEKDAYS: return True
 
     now = (date.hour, date.minute)
-    print(now)
     return now <= WORK_START or now >= WORK_END
 
 def filter_showings(showings):
