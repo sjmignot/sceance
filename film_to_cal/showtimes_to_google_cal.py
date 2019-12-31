@@ -19,25 +19,25 @@ from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-TIME_ZONE = 'France/Paris'
+TIME_ZONE = "Europe/Paris"
 DATA_PATH = 'data/'
 TOKEN_FILE = "token.pickle"
 CRED_FILE = "credentials.json"
 
 def build_and_add_event(service, film, theater, showtime):
-    start_time = showtime.isoformat()
-    end_time = start_time+datetime.timedelta(hours=film.film_length[0], minutes=film.film_length[1])
+    start_time = showtime
+    end_time = start_time+datetime.timedelta(hours=int(film.length[0]), minutes=int(film.length[1]))
 
     event = {
       'summary': f'{film.name} at theater.name',
       'location': theater.address,
       'start': {
-        'dateTime': start_time,
+        'dateTime': start_time.isoformat(),
         'timeZone': TIME_ZONE,
       },
       'end': {
-        'dateTime': end_time,
-        'timeZone': 'America/Los_Angeles',
+        'dateTime': end_time.isoformat(),
+        'timeZone': TIME_ZONE,
       },
     }
 
@@ -67,7 +67,7 @@ def create_projection_events(projection_list):
     Prints the start and name of the next 10 events on the user's calendar.
     """
     creds = get_creds()
-
     service = build('calendar', 'v3', credentials=creds)
     for project in projection_list:
-        build_event(service, *project)
+        print(project)
+        build_and_add_event(service, *project)

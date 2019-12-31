@@ -104,7 +104,7 @@ def get_movie_lengths(film_links):
             name = k.strip(),
             release = release_date.strip(),
             genre = film_genre.strip(),
-            length = tuple(film_length[:-1].strip().split('h '))
+            length = tuple(map(int, film_length[:-1].strip().split('h ')))
         )
         print(cur_film)
         film_length_dict[k] = cur_film
