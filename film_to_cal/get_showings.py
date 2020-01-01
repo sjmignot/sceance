@@ -23,6 +23,7 @@ import re
 import collections
 import time
 import pickle
+
 from distutils.util import strtobool
 import selenium
 from selenium import webdriver
@@ -37,11 +38,12 @@ from contextlib import contextmanager
 # ------------------- #
 
 GOOGLE_CSS_SELECTORS = {
-    "see_more": "div.hide-focus-ring.iXqz2e.aI3msd.xpdarr.pSO8Ic.vk_arc",
+    "see_more": "div[class^='hide-focus-ring']",
     "address": "span.LrzXr",
     "show_days": "li.tb_l",
     "showings": "div.lr_c_fcb.lr-s-stor",
-    "film_length": "div.wwUB2c.PZPZlf"
+    "film_length": "div.wwUB2c.PZPZlf",
+    "english_lang": "div.std.stp.card-section"
 }
 
 FILM_DETAIL_SEP = '‧'
@@ -140,7 +142,7 @@ def get_possible_showtimes(movie_showtimes, film_length_dict, watchlist):
 
 def get_watchlist_showings(headless=False, auto_filter_work=True):
     '''Do X and return a list.'''
-    theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes"
+    theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes&lr=lang_en"
 
     movie_showtimes = {}
     film_links = {}
