@@ -1,25 +1,24 @@
 ***********
-film-to-cal
+sceance
 ***********
 
 Installation
 ############
 
-To start running flim-to-cal, install the project and enable the Google calendar API.
+To start running sceance, install the project and enable the Google calendar API.
 
 Download the app
 ================
 Currently film-to-cal is not available on pip, but you can clone it directly from this repository.
+::
+  :linenos:
+  git clone git@github.com:sjmignot/film-to-cal.git
 
-.. code-block::bash
-    :linenos:
-    git clone git@github.com:sjmignot/film-to-cal.git
+Then, install the dependencies by running the following line:
 
-Then, install the dependencies by rununing the following line:
-
-.. code-block::bash
-    :linenos:
-    git clone git@github.com:sjmignot/film-to-cal.git
+::
+  :linenos:
+  git clone git@github.com:sjmignot/film-to-cal.git
 
 Enable the Google calendar API
 ==============================
