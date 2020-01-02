@@ -9,10 +9,13 @@ Using google calender's API.
 '''
 
 from __future__ import print_function
+
 import os
+import os.path
+
 import datetime
 import pickle
-import os.path
+
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -25,26 +28,28 @@ TOKEN_FILE = "token.pickle"
 CRED_FILE = "credentials.json"
 
 def build_and_add_event(service, film, theater, showtime):
+    '''builds an event object and adds it to the google calendar'''
     start_time = showtime
     end_time = start_time+datetime.timedelta(hours=int(film.length[0]), minutes=int(film.length[1]))
 
     event = {
-      'summary': f'{film.name} at {theater.name}',
-      'location': theater.address,
-      'start': {
-        'dateTime': start_time.isoformat(),
-        'timeZone': TIME_ZONE,
-      },
-      'end': {
-        'dateTime': end_time.isoformat(),
-        'timeZone': TIME_ZONE,
-      },
+        'summary': f'{film.name} at {theater.name}',
+        'location': theater.address,
+        'start': {
+            'dateTime': start_time.isoformat(),
+            'timeZone': TIME_ZONE,
+        },
+        'end': {
+            'dateTime': end_time.isoformat(),
+            'timeZone': TIME_ZONE,
+        },
     }
 
     event = service.events().insert(calendarId='primary', body=event).execute()
     print('Event created: %s' % (event.get('htmlLink')))
 
 def get_creds():
+    '''gets and returns user credentials either from a token or creates a new token if said token expired'''
     creds = None
     if os.path.exists(DATA_PATH+TOKEN_FILE):
         with open(DATA_PATH+TOKEN_FILE, 'rb') as token:
@@ -65,9 +70,7 @@ def get_creds():
     return creds
 
 def create_projection_events(projection_list):
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
+    '''gets credentials, builds calendar API object and for each projection, builds and sends an event to your calendar'''
     creds = get_creds()
     service = build('calendar', 'v3', credentials=creds)
     for project in projection_list:
