@@ -1,4 +1,3 @@
-
 def update_watchlist():
     pass
    
