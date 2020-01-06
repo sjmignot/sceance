@@ -7,6 +7,14 @@ Installation
 
 To start running sceance, install the project and enable the Google calendar API.
 
+Dependencies
+============
+- A Letterboxd account: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done by the `update_watchlist.py` file.
+
+- A Google Account: for sceance to create and suggest events to your calendar.
+
+- Firefox: to run the selenium headless browser to find film showings
+
 Download the app
 ================
 Currently film-to-cal is not available on pip, but you can clone it directly from this repository.
