@@ -1,5 +1,5 @@
 '''
-interact with your update_watchlist by downloading watchlist from letterboxd.
+update your watchlist by signing into your letterboxd account and exporting your content from the site to a local watchlist.txt file.
 '''
 
 #IMPORTS
@@ -17,7 +17,7 @@ SIGN_IN_PAGE = "https://letterboxd.com/user/login.do"
 EXPORT_PAGE = "https://letterboxd.com/data/export"
 REFERER = "https://letterboxd.com/activity/"
 
-# other  constants
+# other constants
 
 SIGN_IN_ID_EL = "username"
 SIGN_IN_PW_EL = "password"
