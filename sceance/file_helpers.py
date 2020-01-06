@@ -9,28 +9,27 @@ import os.path
 DATA_PATH = "data/"
 WATCHLIST_FILE = "watchlist.txt"
 THEATERS_FILE = "theaters.txt"
+MY_PATH = os.path.abspath(os.path.dirname(__file__))
+
 
 # --------------------- #
 # watchlist helpers     #
 # --------------------- #
 def get_watchlist():
     '''Reads the watchlist file and returns a set of movies with titles lowercased.'''
-    watchlist = DATA_PATH+WATCHLIST_FILE
+    watchlist = os.path.join(MY_PATH, f"{DATA_PATH}{WATCHLIST_FILE}")
     assert os.path.exists(watchlist), f"{watchlist} file does not exist."
-    with open(DATA_PATH+WATCHLIST_FILE) as f:
+    with open(watchlist) as f:
         return frozenset((x[:-1]).lower() for x in f.readlines())
-
-def update_watchlist():
-    pass
 
 # --------------------- #
 # theater helpers       #
 # --------------------- #
 def get_theaters():
     '''Reads the theaters file and returns a set of theaters.'''
-    theaterlist= DATA_PATH+THEATERS_FILE
+    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}{THEATERS_FILE}")
     assert os.path.exists(theaterlist), f"{theaterlist} file does not exist."
-    with open(DATA_PATH+THEATERS_FILE) as f:
+    with open(theaterlist) as f:
         return f.readlines()
 
 def add_theater(theater_name):

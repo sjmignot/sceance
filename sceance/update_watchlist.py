@@ -8,6 +8,7 @@ import os
 import zipfile
 import requests
 import pandas as pd
+import os.path
 
 # CONTSTANTS
 
@@ -25,17 +26,23 @@ COOKIE_NAME = "com.xk72.webparts.csrf"
 ZIP_FILE = 'data/lb_data.zip'
 WATCHLIST_CSV = 'watchlist.csv'
 DATA = 'data/'
-WATCHLIST_TXT = 'watchlist.txt'
+WATCHLIST_TXT = 'data/watchlist.txt'
+
+MY_PATH = os.path.abspath(os.path.dirname(__file__))
 
 def extract_watchlist():
     '''extracts the watchlist from  the downloaded letterboxd content'''
-    with zipfile.ZipFile(ZIP_FILE, 'r') as zip_ref:
-        zip_ref.extract(WATCHLIST_CSV, path=DATA)
-    os.remove(ZIP_FILE)
-    watchlist = list(pd.read_csv(f'data/{WATCHLIST_CSV}')['Name'])
-    with open(f"{DATA}{WATCHLIST_TXT}", 'w') as f:
+    zip_file = os.path.join(MY_PATH, ZIP_FILE)
+    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+        zip_ref.extract(WATCHLIST_CSV, path=os.path.join(MY_PATH, DATA))
+    os.remove(zip_file)
+
+    watchlist_csv = os.path.join(MY_PATH, f"{DATA}{WATCHLIST_CSV}")
+    watchlist = list(pd.read_csv(watchlist_csv)['Name'])
+    watchlist_txt = os.path.join(MY_PATH, WATCHLIST_TXT)
+    with open(watchlist_txt, 'w') as f:
         f.write("\n".join(watchlist))
-    os.remove(f"{DATA}{WATCHLIST_CSV}")
+    os.remove(watchlist_csv)
 
 def download_letterboxd_content():
     '''signs you into letterboxd and then downloads the content'''
