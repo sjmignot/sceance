@@ -43,11 +43,14 @@ GOOGLE_CSS_SELECTORS = {
     "show_days": "li.tb_l",
     "showings": "div.lr_c_fcb.lr-s-stor",
     "film_details": "div.wwUB2c.PZPZlf",
+    "film_description": "div.SALvLe.farUxc.mJ2Mod",
     "english_lang": "div.std.stp.card-section"
 }
 
 FILM_DETAIL_SEP = '‧'
 DATA_PATH = 'data/'
+MY_PATH = os.path.abspath(os.path.dirname(__file__))
+
 
 # ------------------- #
 # named_tuples        #
