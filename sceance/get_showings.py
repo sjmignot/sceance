@@ -116,8 +116,9 @@ def wait_for_new_window(driver, timeout=10):
 def get_movie_lengths(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_length_dict = {}
-    if os.path.exists(f'{DATA_PATH}film_length.pickle'):
-        with open(f'{DATA_PATH}film_length.pickle', 'rb') as flf:
+    film_length_pickle = os.path.join(MY_PATH, f"{DATA_PATH}film_length.pickle")
+    if os.path.exists(film_length_pickle):
+        with open(film_length_pickle, 'rb') as flf:
             film_length_dict = pickle.load(flf)
 
     new_films = {k: v for k, v in film_links.items() if k not in film_length_dict.keys()}
@@ -146,7 +147,7 @@ def get_movie_lengths(film_links):
         print(cur_film)
         film_length_dict[k] = cur_film
 
-    with open(f'{DATA_PATH}film_length.pickle', 'wb') as flf:
+    with open(film_length_pickle, 'wb') as flf:
         pickle.dump(film_length_dict, flf)
 
     return film_length_dict

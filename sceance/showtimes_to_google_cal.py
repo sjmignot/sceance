@@ -24,6 +24,7 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 TIME_ZONE = "Europe/Paris"
 DATA_PATH = 'data/'
+MY_PATH = os.path.abspath(os.path.dirname(__file__))
 TOKEN_FILE = "token.pickle"
 CRED_FILE = "credentials.json"
 
@@ -51,8 +52,9 @@ def build_and_add_event(service, film, theater, showtime):
 def get_creds():
     '''gets and returns user credentials either from a token or creates a new token if said token expired'''
     creds = None
-    if os.path.exists(DATA_PATH+TOKEN_FILE):
-        with open(DATA_PATH+TOKEN_FILE, 'rb') as token:
+    token_file = os.path.join(MY_PATH, f"{DATA_PATH}{TOKEN_FILE}")
+    if os.path.exists(token_file):
+        with open(token_file, 'rb') as token:
             creds = pickle.load(token)
 
     # If there are no (valid) credentials available, let the user log in.
@@ -65,7 +67,7 @@ def get_creds():
             creds = flow.run_local_server(port=0)
 
         # Save the credentials for the next run
-        with open(DATA_PATH+TOKEN_FILE, 'wb') as token:
+        with open(token_file, 'wb') as token:
             pickle.dump(creds, token)
     return creds
 
