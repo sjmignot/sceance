@@ -24,6 +24,8 @@ Currently film-to-cal is not available on pip, but you can clone it directly fro
 
 Then, install the dependencies by running the following line:
 
+.. code-block:: console
+   pip install -r requirements.txt
 
 Enable the Google calendar API
 ==============================
@@ -34,3 +36,7 @@ To enable the Google calendar API, you need to download a credentials file from 
 
 How it works
 ############
+
+Contribution Guidelines
+#######################
+
