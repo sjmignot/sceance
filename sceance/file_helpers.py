@@ -15,7 +15,7 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 # --------------------- #
 # watchlist helpers     #
 # --------------------- #
-def get_watchlist():
+def get_watchlist() -> set:
     '''Reads the watchlist file and returns a set of movies with titles lowercased.'''
     watchlist = os.path.join(MY_PATH, f"{DATA_PATH}{WATCHLIST_FILE}")
     assert os.path.exists(watchlist), f"{watchlist} file does not exist."
@@ -25,7 +25,7 @@ def get_watchlist():
 # --------------------- #
 # theater helpers       #
 # --------------------- #
-def get_theaters():
+def get_theaters() -> list:
     '''Reads the theaters file and returns a set of theaters.'''
     theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}{THEATERS_FILE}")
     assert os.path.exists(theaterlist), f"{theaterlist} file does not exist."

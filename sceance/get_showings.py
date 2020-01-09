@@ -89,7 +89,7 @@ def get_elements_or_default(driver, element_selector, default, element_name):
         print(f"{element_name} set to default value of {default}.")
         return default
 
-def start_brower(headless=True):
+def start_brower(headless: bool = True):
     '''starts and returns a selenium firefox brower. Takes a paremeter to determine headedness'''
     options = Options()
     options.headless = headless
@@ -105,7 +105,7 @@ def start_brower(headless=True):
     return driver
 
 @contextmanager
-def wait_for_new_window(driver, timeout=10):
+def wait_for_new_window(driver, timeout: int = 10):
     '''makes sure a new window has loaded before progressing'''
     handles_before = driver.window_handles
     yield
