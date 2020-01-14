@@ -129,7 +129,7 @@ def get_movie_lengths(film_links):
     if not new_films:
         return film_length_dict
 
-    driver = start_brower(True)
+    driver = start_brower(False)
     for k, url in new_films.items():
         driver.get(url)
         film_details = get_element_or_default(
