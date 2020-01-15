@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Learn more: https://github.com/kennethreitz/setup.py
+'''
+setup.py file for sceance
+'''
 
 try:
     from setuptools import setup
@@ -13,21 +15,19 @@ if sys.version_info[:3] < (3, 0, 0):
     sys.exit(1)
 
 with open('README.rst') as f:
-    readme = f.read()
+    README = f.read()
 
 with open('LICENSE') as f:
-    license = f.read()
+    LICENSE = f.read()
 
 setup(
     name='sample',
     version='0.1.0',
     description='Uses a watchlist and favorite theaters to suggest film screenings',
-    long_description=readme,
+    long_description=README,
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    url='https://github.com/sjmignot/film-to-cal',
-    license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
-    entry_points={"console_scripts": ["film_to_calc = film_to_calc.film_to_calc:main"]},
+    url='https://github.com/sjmignot/sceance',
+    license=LICENSE,
+    entry_points={"console_scripts": ["sceance= sceance.sceance:main"]},
 )
-
