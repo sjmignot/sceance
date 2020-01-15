@@ -20,11 +20,13 @@ Download the app
 Currently film-to-cal is not available on pip, but you can clone it directly from this repository.
 
 .. code-block:: console
+
    git clone git@github.com:sjmignot/film-to-cal.git
 
 Then, install the dependencies by running the following line:
 
 .. code-block:: console
+
    pip install -r requirements.txt
 
 Enable the Google calendar API
