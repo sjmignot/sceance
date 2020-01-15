@@ -8,8 +8,6 @@ the work week.
 Using google calender's API.
 '''
 
-from __future__ import print_function
-
 import os
 import os.path
 
@@ -22,11 +20,14 @@ from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-TIME_ZONE = "Europe/Paris"
-DATA_PATH = 'data/'
-MY_PATH = os.path.abspath(os.path.dirname(__file__))
+
 TOKEN_FILE = "token.pickle"
 CRED_FILE = "credentials.json"
+
+MY_PATH = os.path.abspath(os.path.dirname(__file__))
+DATA_PATH = 'data/'
+
+TIME_ZONE = "Europe/Paris"
 
 def build_and_add_event(service, film, theater, showtime):
     '''builds an event object and adds it to the google calendar'''
