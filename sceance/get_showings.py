@@ -27,9 +27,8 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.remote.webelement import WebElement
 
+from webdriver_manager.firefox import GeckoDriverManager
 
 # internal
 import file_helpers
@@ -58,7 +57,7 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 # ------------------- #
 
 Theater = collections.namedtuple('Theater', ['name', 'address'])
-Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length'])
+Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length']) #, 'director', 'description'])
 
 # ----------------------- #
 # selenium driver helpers #
@@ -73,16 +72,15 @@ def get_element(driver, element_selector, element_name):
         print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
         return None
 
-def get_elements(driver, element_selector, element_name):
-    '''gets multiple elements from the current page with the selector, or returns a default and prints an error message'''
-    try:
-        elements = driver.find_elements_by_css_selector(element_selector)
-        return elements
-    except selenium.common.exceptions.NoSuchElementException:
-        print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
-        return []
+def get_elements(driver, element_selector):
+    '''gets multiple elements from the current page with the selector, or returns a default and prints an error message.
+
+    Note, if no elements are found, then the function returns an empty list.'''
+
+    return driver.find_elements_by_css_selector(element_selector)
 
 def get_element_text_or_default(element, default) -> str:
+    '''returns an elements text or a default string value if element is None.'''
     return element.text if element else default
 
 def start_brower(headless: bool = True):
@@ -112,18 +110,18 @@ def wait_for_new_window(driver, timeout: int = 10):
 # extraction helpers      #
 # ----------------------- #
 
-def get_movie_lengths(film_links):
+def get_movie_details(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
-    film_length_dict = {}
-    film_length_pickle = os.path.join(MY_PATH, f"{DATA_PATH}film_length.pickle")
-    if os.path.exists(film_length_pickle):
-        with open(film_length_pickle, 'rb') as flf:
-            film_length_dict = pickle.load(flf)
+    film_details_dict = {}
+    film_details_pickle = os.path.join(MY_PATH, f"{DATA_PATH}film_details.pickle")
+    if os.path.exists(film_details_pickle):
+        with open(film_details_pickle, 'rb') as flf:
+            film_details_dict = pickle.load(flf)
 
-    new_films = {k: v for k, v in film_links.items() if k not in film_length_dict.keys()}
+    new_films = {k: v for k, v in film_links.items() if k not in film_details_dict.keys()}
 
     if not new_films:
-        return film_length_dict
+        return film_details_dict
 
     driver = start_brower(False)
     for k, url in new_films.items():
@@ -139,12 +137,12 @@ def get_movie_lengths(film_links):
         tuple_film_length = tuple(map(int, film_length[:-1].strip().split('h ')))
         cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length)
         print(cur_film)
-        film_length_dict[k] = cur_film
+        film_details_dict[k] = cur_film
 
-    with open(film_length_pickle, 'wb') as flf:
-        pickle.dump(film_length_dict, flf)
+    with open(film_details_pickle, 'wb') as flf:
+        pickle.dump(film_details_dict, flf)
 
-    return film_length_dict
+    return film_details_dict
 
 def get_dates(datelist):
     '''Takes a string of concatenated standard dates and return a list of military time tuples.'''
@@ -184,14 +182,14 @@ def get_showings(driver, theaters):
         movie_theater = Theater(name=theater[:-1], address=get_address(driver))
         print(f"{movie_theater}\n")
         date_s = datetime.datetime.today()
-        for day in get_elements(driver, GOOGLE_CSS_SELECTORS['show_days'], "show days"):
+        for day in get_elements(driver, GOOGLE_CSS_SELECTORS['show_days']):
             day.click()
             see_more_button = get_element(driver, GOOGLE_CSS_SELECTORS['see_more'], "see more")
             if see_more_button:
                 if not strtobool(see_more_button.get_attribute('aria-expanded')):
                     driver.execute_script("arguments[0].click();", see_more_button)
 
-            for showing in get_elements(driver, GOOGLE_CSS_SELECTORS['showings'], "showings"):
+            for showing in get_elements(driver, GOOGLE_CSS_SELECTORS['showings']):
                 if not len(showing.text.splitlines()) == 3:
                     continue
 
@@ -215,7 +213,7 @@ def get_watchlist_showings(headless):
     watchlist = file_helpers.get_watchlist()
 
     film_links = {k: v for k, v in film_links.items() if k.lower() in watchlist}
-    film_length_dict = get_movie_lengths(film_links)
+    film_length_dict = get_movie_details(film_links)
     possible_showtimes = get_possible_showtimes(movie_showtimes, film_length_dict, watchlist)
     print(possible_showtimes)
 
