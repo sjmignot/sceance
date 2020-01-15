@@ -28,6 +28,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.remote.webelement import WebElement
 
 
 # internal
@@ -63,31 +64,26 @@ Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length'])
 # selenium driver helpers #
 # ----------------------- #
 
-def get_element_or_default(driver, element_selector, default, element_name):
+def get_element(driver, element_selector, element_name):
     '''gets an element from the current page with the selector, or returns a default and prints an error message'''
     try:
         element = driver.find_element_by_css_selector(element_selector)
         return element
     except selenium.common.exceptions.NoSuchElementException:
         print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
-        if not default:
-            print(f"there is no default {element_name} skipped")
-            return -1
-        print(f"{element_name} set to default value of {default}.")
-        return default
+        return None
 
-def get_elements_or_default(driver, element_selector, default, element_name):
+def get_elements(driver, element_selector, element_name):
     '''gets multiple elements from the current page with the selector, or returns a default and prints an error message'''
     try:
         elements = driver.find_elements_by_css_selector(element_selector)
         return elements
     except selenium.common.exceptions.NoSuchElementException:
         print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
-        if not default:
-            print(f"there is no default {element_name} skipped")
-            return -1
-        print(f"{element_name} set to default value of {default}.")
-        return default
+        return []
+
+def get_element_text_or_default(element, default) -> str:
+    return element.text if element else default
 
 def start_brower(headless: bool = True):
     '''starts and returns a selenium firefox brower. Takes a paremeter to determine headedness'''
@@ -132,21 +128,16 @@ def get_movie_lengths(film_links):
     driver = start_brower(False)
     for k, url in new_films.items():
         driver.get(url)
-        film_details = get_element_or_default(
-            driver,
-            GOOGLE_CSS_SELECTORS['film_details'],
-            FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"]),
-            "film details"
+        film_detail_default = FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"])
+        film_details = get_element_text_or_default(
+            get_element(driver, GOOGLE_CSS_SELECTORS['film_details'], "film details"),
+            film_detail_default
         )
-        if not isinstance(film_details, str):
-            film_details = film_details.text
+
         release_date, film_genre, film_length = film_details.split(FILM_DETAIL_SEP)
-        cur_film = Film(
-            name=k.strip(),
-            release=release_date.strip(),
-            genre=film_genre.strip(),
-            length=tuple(map(int, film_length[:-1].strip().split('h ')))
-        )
+
+        tuple_film_length = tuple(map(int, film_length[:-1].strip().split('h ')))
+        cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length)
         print(cur_film)
         film_length_dict[k] = cur_film
 
@@ -175,14 +166,11 @@ def get_possible_showtimes(movie_showtimes, film_length_dict, watchlist):
 
 def get_address(driver):
     '''returns the address of a theater or no address if it can't be found'''
-    address = get_element_or_default(
-        driver,
-        GOOGLE_CSS_SELECTORS['address'],
-        "no address found",
-        "address"
+    default_address = 'no address found'
+    address = get_element_text_or_default(
+        get_element(driver, GOOGLE_CSS_SELECTORS['address'], "address"),
+        default_address
     )
-    if not isinstance(address, str):
-        address = address.text
     return address
 
 def get_showings(driver, theaters):
@@ -196,14 +184,14 @@ def get_showings(driver, theaters):
         movie_theater = Theater(name=theater[:-1], address=get_address(driver))
         print(f"{movie_theater}\n")
         date_s = datetime.datetime.today()
-        for day in get_elements_or_default(driver, GOOGLE_CSS_SELECTORS['show_days'], [], "show days"):
+        for day in get_elements(driver, GOOGLE_CSS_SELECTORS['show_days'], "show days"):
             day.click()
-            see_more_button = get_element_or_default(driver, GOOGLE_CSS_SELECTORS['see_more'], "none", "see more")
-            if not isinstance(see_more_button, str):
+            see_more_button = get_element(driver, GOOGLE_CSS_SELECTORS['see_more'], "see more")
+            if see_more_button:
                 if not strtobool(see_more_button.get_attribute('aria-expanded')):
                     driver.execute_script("arguments[0].click();", see_more_button)
 
-            for showing in get_elements_or_default(driver, GOOGLE_CSS_SELECTORS['showings'], [], "showings"):
+            for showing in get_elements(driver, GOOGLE_CSS_SELECTORS['showings'], "showings"):
                 if not len(showing.text.splitlines()) == 3:
                     continue
 
