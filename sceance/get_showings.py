@@ -20,6 +20,9 @@ import re
 import collections
 import pickle
 
+from typing import List, Dict, Tuple
+from typing import NewType
+
 from distutils.util import strtobool
 from contextlib import contextmanager
 
@@ -27,8 +30,9 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-
+from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.firefox import GeckoDriverManager
+
 
 # internal
 import file_helpers
@@ -58,12 +62,13 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 
 Theater = collections.namedtuple('Theater', ['name', 'address'])
 Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length']) #, 'director', 'description'])
+Showtime = NewType('Showtime', datetime.datetime)
 
 # ----------------------- #
 # selenium driver helpers #
 # ----------------------- #
 
-def get_element(driver, element_selector, element_name):
+def get_element(driver, element_selector: str, element_name: str) -> WebElement:
     '''gets an element from the current page with the selector, or returns a default and prints an error message'''
     try:
         element = driver.find_element_by_css_selector(element_selector)
@@ -72,14 +77,14 @@ def get_element(driver, element_selector, element_name):
         print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
         return None
 
-def get_elements(driver, element_selector):
+def get_elements(driver, element_selector) -> List[WebElement]:
     '''gets multiple elements from the current page with the selector, or returns a default and prints an error message.
 
     Note, if no elements are found, then the function returns an empty list.'''
 
     return driver.find_elements_by_css_selector(element_selector)
 
-def get_element_text_or_default(element, default) -> str:
+def get_element_text_or_default(element: WebElement, default: str) -> str:
     '''returns an elements text or a default string value if element is None.'''
     return element.text if element else default
 
@@ -144,25 +149,25 @@ def get_movie_details(film_links):
 
     return film_details_dict
 
-def get_dates(datelist):
+def extract_showtimes(showtimes_string: str) -> List[Tuple]:
     '''Takes a string of concatenated standard dates and return a list of military time tuples.'''
-    date_pattern = r"\d{1,2}\:\d{2}(?:am|pm)"
-    matches = re.findall(date_pattern, datelist)
+    time_pattern = r"\d{1,2}\:\d{2}(?:am|pm)"
+    matches = re.findall(time_pattern, showtimes_string)
     tupled_matches = [list(map(int, match[:-2].split(":")))+[match[-2:]] for match in matches]
     military_time_tuples = [tuple([match[0]+12, match[1]]) if match[2] == 'pm' and match[0] != 12
                             else tuple(match[:2]) for match in tupled_matches]
     return military_time_tuples
 
-def get_possible_showtimes(movie_showtimes, film_length_dict, watchlist):
-    '''returns a Film object to datetime array dict with playtimes for all movies found in watchlist'''
+def get_watchlist_movie_showtimes(movie_showtimes, film_details_dict, watchlist) -> Dict[Film, List[Showtime]]:
+    '''returns a Film object to datetime list dictionary storing all the playtimes for movies found in your watchlist'''
     possible_showtimes = {}
     for movie_name, showtimes in movie_showtimes.items():
         if movie_name.lower() in watchlist:
             for showtime in showtimes:
-                possible_showtimes.setdefault(film_length_dict[movie_name], []).append(showtime)
+                possible_showtimes.setdefault(film_details_dict[movie_name], []).append(showtime)
     return possible_showtimes
 
-def get_address(driver):
+def get_address(driver) -> str:
     '''returns the address of a theater or no address if it can't be found'''
     default_address = 'no address found'
     address = get_element_text_or_default(
@@ -193,17 +198,17 @@ def get_showings(driver, theaters):
                 if not len(showing.text.splitlines()) == 3:
                     continue
 
-                name, datelist = showing.text.splitlines()[1:]
+                name, showtimes_string = showing.text.splitlines()[1:]
                 film_links[name] = showing.find_element_by_css_selector('a').get_attribute('href')
 
-                for show_time in get_dates(datelist):
-                    possible_showtime = date_s.replace(hour=show_time[0], minute=show_time[1])
-                    movie_showtimes.setdefault(name, []).append((movie_theater, possible_showtime))
+                for showtime in extract_showtimes(showtimes_string):
+                    formatted_showtime = date_s.replace(hour=showtime[0], minute=showtime[1])
+                    movie_showtimes.setdefault(name, []).append((movie_theater, formatted_showtime))
             date_s += datetime.timedelta(days=1)
     driver.quit()
     return movie_showtimes, film_links
 
-def get_watchlist_showings(headless):
+def get_watchlist_showings(headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
     '''Main function: starts headless browser, gets showtimes, filmlengths and possible showtimes.'''
     driver = start_brower(headless)
     theaters = file_helpers.get_theaters()
@@ -214,10 +219,10 @@ def get_watchlist_showings(headless):
 
     film_links = {k: v for k, v in film_links.items() if k.lower() in watchlist}
     film_length_dict = get_movie_details(film_links)
-    possible_showtimes = get_possible_showtimes(movie_showtimes, film_length_dict, watchlist)
+    possible_showtimes = get_watchlist_movie_showtimes(movie_showtimes, film_length_dict, watchlist)
     print(possible_showtimes)
 
     return possible_showtimes
 
 if __name__ == "__main__":
-    get_watchlist_showings(headless=True)
+    get_watchlist_showings()
