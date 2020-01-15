@@ -33,7 +33,12 @@ def get_theaters() -> list:
         return f.readlines()
 
 def add_theater(theater_name):
-    pass
+    '''Adds a theater to your favorite theater file'''
+    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}{THEATERS_FILE}")
+    assert os.path.exists(theaterlist), f"{theaterlist} file does not exist."
+    with open(theaterlist) as f:
+        f.write(theater_name)
 
 def remove_theater(theater_name):
+    '''Remove theater from you list of favorite theaters'''
     pass
