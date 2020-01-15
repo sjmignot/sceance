@@ -5,10 +5,11 @@ update your watchlist by signing into your letterboxd account and exporting your
 #IMPORTS
 
 import os
+import os.path
+
 import zipfile
 import requests
 import pandas as pd
-import os.path
 
 # CONTSTANTS
 
