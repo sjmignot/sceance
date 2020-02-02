@@ -48,12 +48,16 @@ GOOGLE_CSS_SELECTORS = {
     "showings": "div.lr_c_fcb.lr-s-stor",
     "film_details": "div.wwUB2c.PZPZlf",
     "film_description": "div.SALvLe.farUxc.mJ2Mod",
-    "english_lang": "div.std.stp.card-section"
+    "english_lang": "div.std.stp.card-section",
 }
 
 FILM_DETAIL_SEP = '‧'
 DATA_PATH = 'data/'
 MY_PATH = os.path.abspath(os.path.dirname(__file__))
+FILM_DETAIL_PATTERNS = {
+    "description": r"Description\n(.*)\n",
+    "director": r"Director: (.*)\n"
+}
 
 
 # ------------------- #
@@ -61,7 +65,7 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 # ------------------- #
 
 Theater = collections.namedtuple('Theater', ['name', 'address'])
-Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length']) #, 'director', 'description'])
+Film = collections.namedtuple('Film', ['name', 'release', 'genre', 'length', 'director', 'description'])
 Showtime = NewType('Showtime', datetime.datetime)
 
 # ----------------------- #
@@ -111,6 +115,14 @@ def wait_for_new_window(driver, timeout: int = 10):
     WebDriverWait(driver, timeout).until(
         lambda driver: len(handles_before) != len(driver.window_handles))
 
+def get_director(detail_text):
+    director = re.findall(FILM_DETAIL_PATTERNS['director'], detail_text)
+    return director[0] if director else 'no director found'
+
+def get_description(detail_text):
+    description = re.findall(FILM_DETAIL_PATTERNS['description'], detail_text)
+    return description[0] if description else 'no description found'
+#
 # ----------------------- #
 # extraction helpers      #
 # ----------------------- #
@@ -137,10 +149,15 @@ def get_movie_details(film_links):
             film_detail_default
         )
 
-        release_date, film_genre, film_length = film_details.split(FILM_DETAIL_SEP)
+        release_date, film_genre, film_length = film_details.split(FILM_DETAIL_SEP) if len(film_details.split(FILM_DETAIL_SEP))==3 else film_detail_default.split(FILM_DETAIL_SEP)
 
         tuple_film_length = tuple(map(int, film_length[:-1].strip().split('h ')))
-        cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length)
+
+        detail_text = get_element_text_or_default(
+            get_element(driver, GOOGLE_CSS_SELECTORS['film_description'], "film description"),
+            film_detail_default
+        )
+        cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length, description=get_description(detail_text), director=get_director(detail_text))
         print(cur_film)
         film_details_dict[k] = cur_film
 
@@ -164,6 +181,7 @@ def get_watchlist_movie_showtimes(movie_showtimes, film_details_dict, watchlist)
     for movie_name, showtimes in movie_showtimes.items():
         if movie_name.lower() in watchlist:
             for showtime in showtimes:
+                print(movie_name)
                 possible_showtimes.setdefault(film_details_dict[movie_name], []).append(showtime)
     return possible_showtimes
 
