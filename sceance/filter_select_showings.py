@@ -6,29 +6,32 @@ Currently the only filter is automatically applied and filters sceances during w
 Currently the program is not intelligent enough to optimize times or ensure that sceances do not overlap.
 '''
 
-WORK_START = (8, 0)
-WORK_END = (19, 00)
-WEEKDAYS = set(range(0, 5))
 DATE_INDEX = 1
 ERROR_MESSAGE = {
     "yes_no": "response must be one of the following: 'yes', 'y', 'no', 'n'",
     "showtime_select": "response must be an integer in the range 1-{max_show}"
 }
 
-def not_during_work(showing):
+def not_during_work(showing, workdays, workhours):
     '''takes a datetime and verifies whether it is during work hours or not (default work hours between 8am and 7pm).'''
     date = showing[DATE_INDEX]
-    if date.weekday() not in WEEKDAYS:
+    print(date.weekday())
+    print(workdays.split(","))
+    if date.weekday() not in list(map(int, workdays.split(","))):
         return True
-
+    work_start, work_end = map(int, workhours.split(','))
+    work_start = (work_start, 0)
+    work_end = (work_end, 0)
+    print(work_start)
+    print(work_end)
     now = (date.hour, date.minute)
-    return now <= WORK_START or now >= WORK_END
+    return now <= work_start or now >= work_end
 
-def filter_showings(showings):
+def filter_showings(showings, workdays, workhours):
     '''for each movie in your watchlist, filters out showtimes during work hours (currently this is the only filter).'''
     filtered_showings_dict = {}
     for movie, showtimes in showings.items():
-        filtered_showings = list(filter(not_during_work, showtimes))
+        filtered_showings = list(filter(lambda x: not_during_work(x, workdays, workhours), showtimes))
         if filtered_showings:
             filtered_showings_dict[movie] = filtered_showings
     return filtered_showings_dict
@@ -68,8 +71,7 @@ def select_showings(filtered_showings_dict):
 
 def filter_select_showings(showings, workdays, workhours):
     '''main function that calls first filter and then select functions'''
-    if auto_filter_work:
-        showings = filter_showings(showings)
+    showings = filter_showings(showings, workdays, workhours)
     selected_showings_dict = select_showings(showings)
     print(selected_showings_dict)
     return selected_showings_dict
