@@ -20,7 +20,7 @@ setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='0.1.6.2',
+    version='0.1.6.7',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -39,8 +39,10 @@ setup(
         'selenium>3',
         'webdriver_manager>2',
     ],
-    entry_points = {
-        'console_scripts': ['sceance=sceance.__main__:main'],
+    entry_points={
+        'console_scripts': [
+            'sceance=sceance.__main__:main',
+        ]
     },
     liscence="MIT",
     classifiers=[

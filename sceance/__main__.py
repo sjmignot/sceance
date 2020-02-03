@@ -47,34 +47,35 @@ def valid_workhours(workhours_input):
         return ((work_start,0), (work_end,0))
     raise argparse.ArgumentTypeError(msg)
 
-# SET UP ARGPARSE
-parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the settings.ini file.')
+def set_up_argparse():
+    '''SET UP ARGPARSE'''
+    parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the settings.ini file.')
 
-parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'],
-        help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']})")
+    parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'],
+            help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']})")
 
-parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'],
-        help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
+    parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'],
+            help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
 
-parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'],
-                    help=f"Which hours do you work. Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
+    parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'],
+                        help=f"Which hours do you work. Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
 
-parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'],
-        help=f"Make sure you provide a valid IANA timezone. (default: {settings['timezone']}).")
+    parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'],
+            help=f"Make sure you provide a valid IANA timezone. (default: {settings['timezone']}).")
 
-args = vars(parser.parse_args())
+    return vars(parser.parse_args())
+
+def main():
+    args = set_up_argparse()
+    film_to_cal(args)
 
 # MAIN FUNCTION: CALLS FILM TO CAL
 if __name__ == "__main__":
-    # film_to_cal
-    film_to_cal(args)
-
-    # TODO #
-
-    # add favorite theater
-
-    # update watchlist using letterboxd
-
-    # set busy schedule
-
-    # keep track of films already scheduled and do not promptif sceance has passed
+    main()
+    '''
+     TODO #
+    - add favorite theater
+    - update watchlist using letterboxd
+    - set busy schedule
+    - keep track of films already scheduled and do not prompt if sceance has passed
+    '''
