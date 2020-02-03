@@ -33,7 +33,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.firefox import GeckoDriverManager
 
-
 # internal
 import file_helpers
 
@@ -219,7 +218,7 @@ def get_showings(driver, theaters):
     driver.quit()
     return movie_showtimes, film_links
 
-def get_watchlist_showings(headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
+def get_watchlist_showings(brower, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
     '''Main function: starts headless browser, gets showtimes, filmlengths and possible showtimes.'''
     driver = start_brower(headless)
     theaters = file_helpers.get_theaters()
@@ -236,4 +235,4 @@ def get_watchlist_showings(headless: bool = True) -> Dict[Film, List[Tuple[Theat
     return possible_showtimes
 
 if __name__ == "__main__":
-    get_watchlist_showings()
+    get_watchlist_showings(browser)

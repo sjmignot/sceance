@@ -27,9 +27,7 @@ CRED_FILE = "credentials.json"
 MY_PATH = os.path.abspath(os.path.dirname(__file__))
 DATA_PATH = 'data/'
 
-TIME_ZONE = "Europe/Paris"
-
-def build_and_add_event(service, film, theater, showtime):
+def build_and_add_event(service, film, theater, showtime, timezone):
     '''builds an event object and adds it to the google calendar'''
     start_time = showtime
     end_time = start_time+datetime.timedelta(hours=int(film.length[0]), minutes=int(film.length[1]))
@@ -73,10 +71,10 @@ def get_creds():
             pickle.dump(creds, token)
     return creds
 
-def create_projection_events(projection_list):
+def create_projection_events(projection_list, timezone):
     '''gets credentials, builds calendar API object and for each projection, builds and sends an event to your calendar'''
     creds = get_creds()
     service = build('calendar', 'v3', credentials=creds)
     for project in projection_list:
         print(project)
-        build_and_add_event(service, *project)
+        build_and_add_event(service, *project, timezone)

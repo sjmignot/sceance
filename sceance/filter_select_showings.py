@@ -66,7 +66,7 @@ def select_showings(filtered_showings_dict):
         selected_showings.append([movie]+list(showings[int(res)-1]))
     return selected_showings
 
-def filter_select_showings(showings, auto_filter_work=True):
+def filter_select_showings(showings, workdays, workhours):
     '''main function that calls first filter and then select functions'''
     if auto_filter_work:
         showings = filter_showings(showings)
