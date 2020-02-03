@@ -117,11 +117,11 @@ def wait_for_new_window(driver, timeout: int = 10):
 
 def get_director(detail_text):
     director = re.findall(FILM_DETAIL_PATTERNS['director'], detail_text)
-    return director[0] if director else 'no director found'
+    return str(director[0]) if director else 'no director found'
 
 def get_description(detail_text):
     description = re.findall(FILM_DETAIL_PATTERNS['description'], detail_text)
-    return description[0] if description else 'no description found'
+    return str(description[0]) if description else 'no description found'
 #
 # ----------------------- #
 # extraction helpers      #
@@ -181,7 +181,7 @@ def get_watchlist_movie_showtimes(movie_showtimes, film_details_dict, watchlist)
     for movie_name, showtimes in movie_showtimes.items():
         if movie_name.lower() in watchlist:
             for showtime in showtimes:
-                print(movie_name)
+                print(film_details_dict[movie_name])
                 possible_showtimes.setdefault(film_details_dict[movie_name], []).append(showtime)
     return possible_showtimes
 

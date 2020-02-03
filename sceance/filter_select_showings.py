@@ -46,7 +46,7 @@ def select_showings(filtered_showings_dict):
     selected_showings = []
     for movie, showings in filtered_showings_dict.items():
         res = get_input(
-            f"Watch {movie.name}? [y/n] ",
+            f"Watch {movie.name}? [y/n]\nDescription: {movie.description}\nDirector: {movie.director}\n",
             {'y', 'yes', 'no', 'n'},
             ERROR_MESSAGE['yes_no']
         )
