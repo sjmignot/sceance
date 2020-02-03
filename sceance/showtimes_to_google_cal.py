@@ -37,11 +37,11 @@ def build_and_add_event(service, film, theater, showtime, timezone):
         'location': theater.address,
         'start': {
             'dateTime': start_time.isoformat(),
-            'timeZone': TIME_ZONE,
+            'timeZone': timezone,
         },
         'end': {
             'dateTime': end_time.isoformat(),
-            'timeZone': TIME_ZONE,
+            'timeZone': timezone,
         },
     }
 

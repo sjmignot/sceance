@@ -15,15 +15,9 @@ ERROR_MESSAGE = {
 def not_during_work(showing, workdays, workhours):
     '''takes a datetime and verifies whether it is during work hours or not (default work hours between 8am and 7pm).'''
     date = showing[DATE_INDEX]
-    print(date.weekday())
-    print(workdays.split(","))
-    if date.weekday() not in list(map(int, workdays.split(","))):
+    if date.weekday() not in workdays:
         return True
-    work_start, work_end = map(int, workhours.split(','))
-    work_start = (work_start, 0)
-    work_end = (work_end, 0)
-    print(work_start)
-    print(work_end)
+    work_start, work_end = workhours
     now = (date.hour, date.minute)
     return now <= work_start or now >= work_end
 
