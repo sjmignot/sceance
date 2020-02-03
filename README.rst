@@ -47,7 +47,7 @@ How it works
 
 Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm work hours. For all the films that remain, you are prompted with a list of showtimes and can select one.
 
-This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you `Enable the Google calendar API`: doing this allows sceance to write to your calendar.
+This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you `Enable the Google calendar API`_: doing this allows sceance to write to your calendar.
 
 Contribution Guidelines
 #######################
