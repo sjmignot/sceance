@@ -16,9 +16,11 @@ if sys.version_info[:3] < (3, 0, 0):
 
 from os import path
 this_directory = path.abspath(path.dirname(__file__))
-
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+
+with open(path.join(this_directory, 'LICENSE', encoding='utf-8') as f:
+    LICENSE = f.read()
 
 setup(
     name='sample',
@@ -29,6 +31,17 @@ setup(
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
     url='https://github.com/sjmignot/sceance',
+    download_url='https://github.com/sjmignot/sceance/archive/v_01.tar.gz',
+    keywords = ['movie theater', 'showtimes', 'selenium', 'movies', 'film'],
+    install_requires=[
+        'requests>2'
+        'google_api_python_client>1'
+        'google_auth_oauthlib'
+        'pandas'
+        'protobuf>3'
+        'selenium>3'
+        'webdriver_manager>2'
+    ],
     license=LICENSE,
     entry_points={"console_scripts": ["sceance= sceance.sceance:main"]},
     classifiers=[
