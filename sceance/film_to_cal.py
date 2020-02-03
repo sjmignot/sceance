@@ -23,10 +23,10 @@ import filter_select_showings
 # constants           #
 # ------------------- #
 
-def film_to_cal(args, headless: bool = True):
+def film_to_cal(args, headless: bool = False):
     '''main file for getting showings and savaing them to a google calendar'''
     print(args)
-    showings = get_showings.get_watchlist_showings(headless, args['browser'])
+    showings = get_showings.get_watchlist_showings(args['browser'], headless)
     projection_list = filter_select_showings.filter_select_showings(showings, args['workdays'], args['workhours'])
     showtimes_to_google_cal.create_projection_events(projection_list, args['timezone'])
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Starts a Firfox headless brower to see if movies on your watchlist are playing
+Starts a Firfox headless browser to see if movies on your watchlist are playing
 at any of your favorite theaters.
 
 Favorite theaters are taken from a txt file (extracted from "theaters.txt").
@@ -32,6 +32,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 
 # internal
 import file_helpers
@@ -91,20 +92,26 @@ def get_element_text_or_default(element: WebElement, default: str) -> str:
     '''returns an elements text or a default string value if element is None.'''
     return element.text if element else default
 
-def start_brower(headless: bool = True):
+def start_browser(browser, headless: bool = True):
     '''starts and returns a selenium firefox brower. Takes a paremeter to determine headedness'''
-    options = Options()
-    options.headless = headless
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference('intl.accept_languages', 'en_GB')
+    print(browser)
+    if browser=='firefox':
+        options = Options()
+        options.headless = headless
 
-    driver = webdriver.Firefox(
-        executable_path=GeckoDriverManager().install(),
-        firefox_profile=profile,
-        options=options,
-        service_log_path=os.path.devnull
-    )
-    return driver
+        return webdriver.Firefox(
+            executable_path=GeckoDriverManager().install(),
+            options=options,
+            service_log_path=os.path.devnull
+        )
+    else:
+        options = webdriver.ChromeOptions()
+        options.headless= headless
+        return webdriver.Chrome(
+            executable_path=ChromeDriverManager().install(),
+            options=options,
+            service_log_path=os.path.devnull
+        )
 
 @contextmanager
 def wait_for_new_window(driver, timeout: int = 10):
@@ -136,7 +143,7 @@ def get_movie_details(film_links):
     if not new_films:
         return film_details_dict
 
-    driver = start_brower(False)
+    driver = start_browser(True)
     for k, url in new_films.items():
         driver.get(url)
         film_detail_default = FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"])
@@ -188,7 +195,7 @@ def get_address(driver) -> str:
 
 def get_showings(driver, theaters):
     '''Function blindly collects showtimes from all favorite theaters.'''
-    theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes&lr=lang_en"
+    theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes&lr=lang_en&hl=en"
     movie_showtimes = {}
     film_links = {}
     for theater in theaters:
@@ -218,9 +225,9 @@ def get_showings(driver, theaters):
     driver.quit()
     return movie_showtimes, film_links
 
-def get_watchlist_showings(brower, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
+def get_watchlist_showings(browser, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
     '''Main function: starts headless browser, gets showtimes, filmlengths and possible showtimes.'''
-    driver = start_brower(headless)
+    driver = start_browser(browser, headless)
     theaters = file_helpers.get_theaters()
     movie_showtimes, film_links = get_showings(driver, theaters)
 
