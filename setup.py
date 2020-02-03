@@ -23,7 +23,7 @@ with open('LICENSE') as f:
 setup(
     name='sample',
     version='0.1.0',
-    description='Uses a watchlist and favorite theaters to suggest film screenings',
+    description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=README,
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',

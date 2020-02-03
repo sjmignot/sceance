@@ -1,18 +1,14 @@
-***********
-sceance
-***********
+# sceance
 
 Sceance is an application for moviegoers. If you provide it with a list of your favorite cinemas and your movie watchlist, it suggests showtimes, letting you watch your favorite movies in theaters.
 
 It was designed with Paris, a city full of small and independent cinemas, in mind.
 
-Installation
-############
+## Installation
 
 To start running sceance, install the project and enable the Google calendar API.
 
-Dependencies
-============
+### Dependencies
 
 Most dependencies are optional:
 
@@ -22,34 +18,32 @@ Most dependencies are optional:
 
 - **Firefox**: to run the selenium headless browser to find film showings (with a little customization to `get_showings.py` you can use google chrome instead).
 
-Download the app
-================
+### Download the app
+
 Currently sceance is not available on pip, but you can clone it directly from this repository.
 
-.. code-block:: console
-
-   git clone git@github.com:sjmignot/film-to-cal.git
+```bash
+git clone git@github.com:sjmignot/film-to-cal.git
+```
 
 Then, install the dependencies by running the following line:
 
-.. code-block:: console
+```bash
+pip install -r requirements.txt
+```
 
-   pip install -r requirements.txt
-
-Enable the Google calendar API
-==============================
+### Enable the Google calendar API
 
 To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `film_to_cal/film_to_calc/data` subfolder. This file can be downloaded from:
 
 `https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the`
 
-How it works
-############
+## How sceance works
 
 Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm work hours. For all the films that remain, you are prompted with a list of showtimes and can select one.
 
-This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you `Enable the Google calendar API`_: doing this allows sceance to write to your calendar.
+This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you [enable the Google calendar API](#enable-the-google-calendar-api): doing this allows sceance to write to your calendar.
 
-Contribution Guidelines
-#######################
+## Contribution Guidelines
 
+No contribution guidelines yet.
