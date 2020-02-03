@@ -20,7 +20,7 @@ setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='0.1.6.0',
+    version='0.1.6.2',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -28,7 +28,7 @@ setup(
     download_url='https://github.com/sjmignot/sceance/archive/v_01.tar.gz',
     packages=['sceance'],
     package_dir={'sceance': 'sceance'},
-    package_data={'sceance': ['data/*.txt']},
+    package_data={'sceance': ['data/*.txt', 'data/*.ini']},
     keywords = ['movie theater', 'showtimes', 'selenium', 'movies', 'film'],
     install_requires=[
         'requests>2',
@@ -40,7 +40,7 @@ setup(
         'webdriver_manager>2',
     ],
     entry_points = {
-        'console_scripts': ['sceance=sceance'],
+        'console_scripts': ['sceance=sceance.__main__:main'],
     },
     liscence="MIT",
     classifiers=[

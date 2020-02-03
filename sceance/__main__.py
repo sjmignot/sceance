@@ -11,7 +11,7 @@ from film_to_cal import film_to_cal
 THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 SETTINGS_FILE = "settings.ini"
 config = configparser.ConfigParser()
-config.read(f"{THIS_DIRECTORY}/{SETTINGS_FILE}")
+config.read(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}")
 settings = config['DEFAULT']
 
 # TYPE VERIFICATION
