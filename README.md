@@ -22,13 +22,13 @@ Most dependencies are optional:
 
 Currently sceance is not available on pip, but you can clone it directly from this repository.
 
-```bash
+```sh
 git clone git@github.com:sjmignot/film-to-cal.git
 ```
 
 Then, install the dependencies by running the following line:
 
-```bash
+```sh
 pip install -r requirements.txt
 ```
 
