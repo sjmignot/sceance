@@ -1,3 +1,5 @@
+# sceance
+
 Sceance is an application for moviegoers. If you provide it with a list of your favorite cinemas and your movie watchlist, it suggests showtimes, letting you watch your favorite movies in theaters.
 
 It was designed with Paris, a city full of small and independent cinemas, in mind.
@@ -10,25 +12,32 @@ To start running sceance, install the project and enable the Google calendar API
 
 Most dependencies are optional:
 
-- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles.
-
 - **A Google Account**: for sceance to create and suggest events to your calendar.
 
-- **Firefox**: to run the selenium headless browser to find film showings (with a little customization to `get_showings.py` you can use google chrome instead).
+- **Firefox or Chrome**: to run the selenium headless browser to find film showings.
+
+- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles.
 
 ### Download the app
 
-Currently sceance is not available on pip, but you can clone it directly from this repository.
-
+You can install sceance with pip.
 ```sh
-git clone git@github.com:sjmignot/film-to-cal.git
+pip install sceance
 ```
 
-Then, install the dependencies by running the following line:
-
+To run sceance, simply call:
 ```sh
-pip install -r requirements.txt
+sceance
 ```
+
+To get information on parameters run:
+```sh
+sceance -h
+```
+
+At this point, sceance can suggest films, but is unable to automatically add events to your google calendar.
+
+If you want scence to add films to your calendar, you need to [enable the google calendar API](#enable-the-google-calendar-api).
 
 ### Enable the Google calendar API
 
