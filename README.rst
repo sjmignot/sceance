@@ -14,7 +14,8 @@ To start running sceance, install the project and enable the Google calendar API
 Dependencies
 ============
 
-Most dependencies are optional
+Most dependencies are optional:
+
 - **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles.
 
 - **A Google Account**: for sceance to create and suggest events to your calendar.
