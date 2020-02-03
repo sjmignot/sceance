@@ -18,6 +18,7 @@ import get_showings
 from get_showings import Film, Theater
 import showtimes_to_google_cal
 import filter_select_showings
+import configparser
 
 # ------------------- #
 # constants           #
