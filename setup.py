@@ -20,7 +20,7 @@ setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='0.1.5.4',
+    version='0.1.5.6',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -30,7 +30,7 @@ setup(
     install_requires=[
         'requests>2',
         'google_api_python_client>1',
-        'google_auth_oauthlib'
+        'google_auth_oauthlib',
         'pandas',
         'protobuf>3',
         'selenium>3',
