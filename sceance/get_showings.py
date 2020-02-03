@@ -116,10 +116,12 @@ def wait_for_new_window(driver, timeout: int = 10):
         lambda driver: len(handles_before) != len(driver.window_handles))
 
 def get_director(detail_text):
+    '''uses a regex to extract director from film_details'''
     director = re.findall(FILM_DETAIL_PATTERNS['director'], detail_text)
     return str(director[0]) if director else 'no director found'
 
 def get_description(detail_text):
+    '''uses a regex to extract director from film_details'''
     description = re.findall(FILM_DETAIL_PATTERNS['description'], detail_text)
     return str(description[0]) if description else 'no description found'
 #
@@ -130,11 +132,6 @@ def get_description(detail_text):
 def get_movie_details(film_links):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_details_dict = {}
-    film_details_pickle = os.path.join(MY_PATH, f"{DATA_PATH}film_details.pickle")
-    if os.path.exists(film_details_pickle):
-        with open(film_details_pickle, 'rb') as flf:
-            film_details_dict = pickle.load(flf)
-
     new_films = {k: v for k, v in film_links.items() if k not in film_details_dict.keys()}
 
     if not new_films:
@@ -158,11 +155,7 @@ def get_movie_details(film_links):
             film_detail_default
         )
         cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length, description=get_description(detail_text), director=get_director(detail_text))
-        print(cur_film)
         film_details_dict[k] = cur_film
-
-    with open(film_details_pickle, 'wb') as flf:
-        pickle.dump(film_details_dict, flf)
 
     return film_details_dict
 
