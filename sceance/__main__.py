@@ -51,7 +51,7 @@ def valid_workhours(workhours_input):
 parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the settings.ini file.')
 
 parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'],
-        help=f"Whether you want to run a chrome (c) or firefox (f) headless browser (default: {settings['browser']})")
+        help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']})")
 
 parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'],
         help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
