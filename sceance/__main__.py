@@ -27,7 +27,7 @@ def valid_timezone(timezone_input):
 
 def valid_workdays(workdays_input):
     '''checks whether string is valid workday'''
-    msg = f"{workdays_input} is not a valid workdays input. Your input should be a subset of [0,1,2,3,4,5,6] presented as a comma seperated string. ex: (1,2,4)."
+    msg = f"{workdays_input} is not a valid workdays input. Your input should be a subset of [0,1,2,3,4,5,6] presented as a comma seperated string. ex: 1,2,4."
     try:
         workdays = set(map(int, workdays_input.split(',')))
     except:
@@ -47,26 +47,35 @@ def valid_workhours(workhours_input):
         return ((work_start,0), (work_end,0))
     raise argparse.ArgumentTypeError(msg)
 
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 def set_up_argparse():
     '''SET UP ARGPARSE'''
     parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the data/settings.ini file.')
 
-    parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'],
-            help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']})")
+    parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'], help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']}).")
 
-    parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'],
-            help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
+    parser.add_argument('-a', '--all-films', type=str2bool, nargs='?', const=True, default=False, help=f"If you want all films instead of filtering based on your watchlist.txt file. (default: False).")
 
-    parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'],
-                        help=f"Which hours do you work. Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
+    parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'], help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
 
-    parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'],
-            help=f"Make sure you provide a valid IANA timezone. (default: {settings['timezone']}).")
+    parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'], help=f"Which hours do you work. Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
+
+    parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"Make sure you provide a valid IANA timezone. Used by the google calendar api. (default: {settings['timezone']}).")
 
     return vars(parser.parse_args())
 
 def main():
     args = set_up_argparse()
+    print(args)
     film_to_cal(args)
 
 # MAIN FUNCTION: CALLS FILM TO CAL

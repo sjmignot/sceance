@@ -45,9 +45,17 @@ To enable the Google calendar API, you need to download a credentials file from 
 
 `https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the`
 
+### Customize theaters.txt
+
+Currently, the theaters.txt file will contain a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you'll have to customize the file. This is also the case for your watchlist.txt file.
+
+### Customize watchlist.txt
+
+If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports).
+
 ## How sceance works
 
-Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm monday-friday work hours.
+Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm monday-friday work hours (both workdays and hours are customizable).
 
 For all the films that remain, you are prompted with a list of showtimes and can select one showtime per film.
 
