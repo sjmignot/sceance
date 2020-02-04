@@ -20,7 +20,7 @@ setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='0.2.0.0',
+    version='0.2.0.1',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -38,6 +38,7 @@ setup(
         'protobuf>3',
         'selenium>3',
         'webdriver_manager>2',
+        'progress>1',
     ],
     entry_points={
         'console_scripts': [

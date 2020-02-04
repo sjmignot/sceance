@@ -1,0 +1,8 @@
+requests>2
+google_api_python_client>1
+google_auth_oauthlib
+pandas
+protobuf>3
+selenium>3
+webdriver_manager>2
+progress>1

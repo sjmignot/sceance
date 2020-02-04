@@ -75,7 +75,6 @@ def set_up_argparse():
 
 def main():
     args = set_up_argparse()
-    print(args)
     film_to_cal(args)
 
 # MAIN FUNCTION: CALLS FILM TO CAL

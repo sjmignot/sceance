@@ -12,6 +12,25 @@ ERROR_MESSAGE = {
     "showtime_select": "response must be an integer in the range 1-{max_show}"
 }
 
+COLOR = {
+    'purple': '\033[95m',
+    'cyan': '\033[96m',
+    'darkcyan': '\033[36m',
+    'blue': '\033[94m',
+    'green': '\033[92m',
+    'yellow': '\033[93m',
+    'red': '\033[91m',
+    'bold': '\033[1m',
+    'underline': '\033[4m',
+    'end': '\033[0m',
+}
+
+def bold(word):
+    return COLOR['bold']+word+COLOR['end']
+
+def underline(word):
+    return COLOR['underline']+word+COLOR['end']
+
 def not_during_work(showing, workdays, workhours):
     '''takes a datetime and verifies whether it is during work hours or not (default work hours between 8am and 7pm).'''
     date = showing[DATE_INDEX]
@@ -43,7 +62,7 @@ def select_showings(filtered_showings_dict):
     selected_showings = []
     for movie, showings in filtered_showings_dict.items():
         res = get_input(
-            f"Watch {movie.name}? [y/n]\nDescription: {movie.description}\nDirector: {movie.director}\n",
+            f"Watch '{underline(movie.name)}'?\n{bold('Director')}: {movie.director}\n{bold('Description')}: {movie.description}\n[y/n]: ",
             {'y', 'yes', 'no', 'n'},
             ERROR_MESSAGE['yes_no']
         )

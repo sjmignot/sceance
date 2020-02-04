@@ -61,6 +61,8 @@ FILM_DETAIL_PATTERNS = {
     "director": r"Director: (.*)\n"
 }
 
+DEBUG = False
+
 
 # ------------------- #
 # named_tuples        #
@@ -80,7 +82,7 @@ def get_element(driver, element_selector: str, element_name: str) -> WebElement:
         element = driver.find_element_by_css_selector(element_selector)
         return element
     except selenium.common.exceptions.NoSuchElementException:
-        print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
+        if DEBUG: print(f"could not find {element_name} on {driver.current_url} with selector {element_selector}.")
         return None
 
 def get_elements(driver, element_selector) -> List[WebElement]:
@@ -139,33 +141,30 @@ def get_description(detail_text):
 def get_movie_details(film_links, browser):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_details_dict = {}
-    new_films = {k: v for k, v in film_links.items() if k not in film_details_dict.keys()}
+    driver = start_browser(browser)
+    with FillingSquaresBar('Gathering Film Details', max=len(film_links), suffix="%(index)d/%(max)d") as bar:
+        for k, url in film_links.items():
+            driver.get(url)
+            film_detail_default = FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"])
+            film_details = get_element_text_or_default(
+                get_element(driver, GOOGLE_CSS_SELECTORS['film_details'], "film details"),
+                film_detail_default
+            )
 
-    if not new_films:
-        return film_details_dict
+            release_date, film_genre, film_length = film_details.split(FILM_DETAIL_SEP) if len(film_details.split(FILM_DETAIL_SEP))==3 else film_detail_default.split(FILM_DETAIL_SEP)
+            try:
+                tuple_film_length = tuple(map(int, film_length[:-1].strip().split('h ')))
+            except:
+                tuple_film_length = (1,50)
 
-    driver = start_browser(browser, True)
-    for k, url in new_films.items():
-        driver.get(url)
-        film_detail_default = FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"])
-        film_details = get_element_text_or_default(
-            get_element(driver, GOOGLE_CSS_SELECTORS['film_details'], "film details"),
-            film_detail_default
-        )
-
-        release_date, film_genre, film_length = film_details.split(FILM_DETAIL_SEP) if len(film_details.split(FILM_DETAIL_SEP))==3 else film_detail_default.split(FILM_DETAIL_SEP)
-        try:
-            tuple_film_length = tuple(map(int, film_length[:-1].strip().split('h ')))
-        except:
-            tuple_film_length = (1,50)
-
-        detail_text = get_element_text_or_default(
-            get_element(driver, GOOGLE_CSS_SELECTORS['film_description'], "film description"),
-            film_detail_default
-        )
-        cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length, description=get_description(detail_text), director=get_director(detail_text))
-        film_details_dict[k] = cur_film
-
+            detail_text = get_element_text_or_default(
+                get_element(driver, GOOGLE_CSS_SELECTORS['film_description'], "film description"),
+                film_detail_default
+            )
+            cur_film = Film(name=k.strip(), release=release_date.strip(), genre=film_genre.strip(), length=tuple_film_length, description=get_description(detail_text), director=get_director(detail_text))
+            film_details_dict[k] = cur_film
+            bar.next()
+    print("")
     return film_details_dict
 
 def extract_showtimes(showtimes_string: str) -> List[Tuple]:
@@ -227,6 +226,7 @@ def get_showings(driver, theaters):
             bar.next()
     driver.quit()
     print("Theaters processed...")
+    print(f"Number of films found: {len(film_links)}")
     return movie_showtimes, film_links
 
 def get_watchlist_showings(browser, all_films, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
@@ -235,13 +235,13 @@ def get_watchlist_showings(browser, all_films, headless: bool = True) -> Dict[Fi
     theaters = file_helpers.get_theaters()
     movie_showtimes, film_links = get_showings(driver, theaters)
 
-    print(movie_showtimes.keys())
     watchlist = file_helpers.get_watchlist()
 
-    film_links = {k: v for k, v in film_links.items() if k.lower() in watchlist} if not all_films else film_links
+    if not all_films:
+        film_links = {k: v for k, v in film_links.items() if k.lower() in watchlist}
+        print(f"Number of films found and in your watchlist: {len(film_links)}")
     film_length_dict = get_movie_details(film_links, browser)
     possible_showtimes = get_watchlist_movie_showtimes(movie_showtimes, film_length_dict, watchlist, all_films)
-    print(possible_showtimes.keys())
     return possible_showtimes
 
 if __name__ == "__main__":
