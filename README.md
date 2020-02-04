@@ -51,7 +51,7 @@ Currently, the theaters.txt file will contain a set of my favorite Parisian movi
 
 ### Customize watchlist.txt
 
-If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports).
+If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag.
 
 ## How sceance works
 

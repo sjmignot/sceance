@@ -1,3 +1,0 @@
-[console_scripts]
-sceance = sceance.__main__:main
-
