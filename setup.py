@@ -45,7 +45,7 @@ setup(
             'sceance=sceance.__main__:main',
         ]
     },
-    liscence="MIT",
+    license="MIT",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

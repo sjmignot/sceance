@@ -27,7 +27,8 @@ pip install sceance
 
 To run sceance, simply call:
 ```sh
-sceance
+sceance [-h] [-b {firefox,chrome}] [-a] [-d WORKDAYS] [-w WORKHOURS]
+     [-t TIMEZONE] [-v]
 ```
 
 To get information on parameters run:
