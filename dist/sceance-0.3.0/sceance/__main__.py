@@ -71,13 +71,12 @@ def set_up_argparse():
 
     parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"Make sure you provide a valid IANA timezone. Used by the google calendar api. (default: {settings['timezone']}).")
 
-    parser.add_argument('-v', '--version', action='version', version='0.2.0.2')
+    parser.add_argument('--version', action='version', version='0.2.0.2')
 
     return vars(parser.parse_args())
 
 def main():
     args = set_up_argparse()
-    print(args)
     film_to_cal(args)
 
 # MAIN FUNCTION: CALLS FILM TO CAL
