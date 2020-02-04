@@ -63,7 +63,7 @@ def set_up_argparse():
 
     parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'], help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']}).")
 
-    parser.add_argument('-a', '--all-films', type=str2bool, nargs='?', const=True, default=False, help=f"If you want all films instead of filtering based on your watchlist.txt file. (default: False).")
+    parser.add_argument('-a', '--all-films', action='store_true', help=f"If you want all films instead of filtering based on your watchlist.txt file. (default: False).")
 
     parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'], help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
 
@@ -71,7 +71,7 @@ def set_up_argparse():
 
     parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"Make sure you provide a valid IANA timezone. Used by the google calendar api. (default: {settings['timezone']}).")
 
-    parser.add_argument('-v', '--version', action='version', version='0.2.0.2')
+    parser.add_argument('-v', '--version', action='version', version='0.3.1')
 
     return vars(parser.parse_args())
 
