@@ -10,6 +10,7 @@ from film_to_cal import film_to_cal
 # get default settings from settings.ini file
 THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 SETTINGS_FILE = "settings.ini"
+CRED_FILE = "credentials.json"
 config = configparser.ConfigParser()
 config.read(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}")
 settings = config['DEFAULT']
@@ -47,15 +48,9 @@ def valid_workhours(workhours_input):
         return ((work_start,0), (work_end,0))
     raise argparse.ArgumentTypeError(msg)
 
-def str2bool(v):
-    if isinstance(v, bool):
-       return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+def check_for_google_credentials():
+    if not os.path.exists(f"{THIS_DIRECTORY}/data/{CRED_FILE}"):
+        print(f"WARNING: {THIS_DIRECTORY}/data/{CRED_FILE} does not exist. sceance will be unable to add events to your google calender. To fix this, check the instructions on enabling the google calendar API (https://github.com/sjmignot/sceance#enable-the-google-calendar-api).")
 
 def set_up_argparse():
     '''SET UP ARGPARSE'''
@@ -77,7 +72,7 @@ def set_up_argparse():
 
 def main():
     args = set_up_argparse()
-    print(args)
+    check_for_google_credentials()
     film_to_cal(args)
 
 # MAIN FUNCTION: CALLS FILM TO CAL
