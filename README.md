@@ -41,13 +41,15 @@ If you want scence to add films to your calendar, you need to [enable the google
 
 ### Enable the Google calendar API
 
-To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `film_to_cal/film_to_calc/data` subfolder. This file can be downloaded from:
+To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `sceance/sceance/data` subfolder. This file can be downloaded from:
 
 `https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the`
 
 ## How sceance works
 
-Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm work hours. For all the films that remain, you are prompted with a list of showtimes and can select one.
+Sceance uses selenium to gather showtime information for every theater in your theater.txt file, from Google. These films are then intersected with your watchlist. Details on the resulting films and their showtimes are then filtered out based on 9am-5pm monday-friday work hours.
+
+For all the films that remain, you are prompted with a list of showtimes and can select one showtime per film.
 
 This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you [enable the Google calendar API](#enable-the-google-calendar-api): doing this allows sceance to write to your calendar.
 

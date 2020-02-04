@@ -49,7 +49,7 @@ def valid_workhours(workhours_input):
 
 def set_up_argparse():
     '''SET UP ARGPARSE'''
-    parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the settings.ini file.')
+    parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the data/settings.ini file.')
 
     parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'],
             help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']})")
