@@ -45,11 +45,17 @@ To enable the Google calendar API, you need to download a credentials file from 
 
 ### Customize theaters.txt
 
-Currently, the theaters.txt file will contain a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you'll have to customize the file. This is also the case for your watchlist.txt file.
+By default, the theaters.txt file contains a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you have to customize the file: you can find it in the data subfolder of the sceance package.
 
 ### Customize watchlist.txt
 
-If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag, but this might provide you with a lot of movies.
+By default, the watchlist.txt contains every film from the criterion collection. However, to get the most from sceance, you should use a personal watchlist.
+
+If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file (you will need to store your letterboxd credentials in environment variables).
+
+Make sure your watchlist is in English (which is currently the only language that sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag, but this might provide you with a lot of movies.
+
+You can find the `watchlist.txt` file in the data subfolder of the sceance package.
 
 ## How sceance works
 
