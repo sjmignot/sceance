@@ -43,6 +43,8 @@ If you want scence to add films to your calendar, you need to [enable the google
 
 To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `sceance/sceance/data` subfolder. This file can be downloaded from the [calendar API documentation](https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the). Call the file `credentials.json`.
 
+I'm in the process of implementing a cleaner authentication process.
+
 ### Customize theaters.txt
 
 By default, the theaters.txt file contains a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you have to customize the file: you can find it in the data subfolder of the sceance package.

@@ -66,7 +66,7 @@ def set_up_argparse():
 
     parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"What timezone do you live in? Make sure you provide a valid IANA timezone. This is used by the google calendar api. (default: {settings['timezone']}).")
 
-    parser.add_argument('-v', '--version', action='version', version='0.3.1')
+    parser.add_argument('-v', '--version', action='version', version='0.3.2')
 
     return vars(parser.parse_args())
 
