@@ -41,9 +41,7 @@ If you want scence to add films to your calendar, you need to [enable the google
 
 ### Enable the Google calendar API
 
-To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `sceance/sceance/data` subfolder. This file can be downloaded from:
-
-`https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the`
+To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `sceance/sceance/data` subfolder. This file can be downloaded from the [calendar API documentation](https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the). Call the file `credentials.json`.
 
 ### Customize theaters.txt
 
@@ -51,7 +49,7 @@ Currently, the theaters.txt file will contain a set of my favorite Parisian movi
 
 ### Customize watchlist.txt
 
-If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag.
+If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file. Make sure your watchlist is in English (which is currently the only language sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag, but this might provide you with a lot of movies.
 
 ## How sceance works
 
