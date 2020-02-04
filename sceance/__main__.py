@@ -61,15 +61,15 @@ def set_up_argparse():
     '''SET UP ARGPARSE'''
     parser = argparse.ArgumentParser(description='Discover which movies in your watchlist are playing in your favorite theaters. You can change defaults by updating the data/settings.ini file.')
 
-    parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'], help=f"Whether you want to run a chrome or firefox headless browser (default: {settings['browser']}).")
+    parser.add_argument('-b', '--browser', default=settings['browser'], choices=['firefox', 'chrome'], help=f"use chrome or firefox headless browser (default: {settings['browser']}).")
 
-    parser.add_argument('-a', '--all-films', action='store_true', help=f"If you want all films instead of filtering based on your watchlist.txt file. (default: False).")
+    parser.add_argument('-a', '--all-films', action='store_true', help=f"suggest all films instead of filtering based on watchlist.txt.")
 
-    parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'], help=f"Which days you work. A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
+    parser.add_argument('-d', '--workdays', type=valid_workdays, default=settings['workdays'], help=f"which days do you work? A comma seperated list of numbers between 0 and 6 (0 is monday, 1 is tueday, ..., 6 is sunday). (default: {settings['workdays']}).")
 
-    parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'], help=f"Which hours do you work. Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
+    parser.add_argument('-w', '--workhours', type=valid_workhours, default=settings['workhours'], help=f"Which hours do you work? Hours are in 24 hour time and formatted: start_hour,end_hour. (default: {settings['workhours']}).")
 
-    parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"Make sure you provide a valid IANA timezone. Used by the google calendar api. (default: {settings['timezone']}).")
+    parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"What timezone do you live in? Make sure you provide a valid IANA timezone. This is used by the google calendar api. (default: {settings['timezone']}).")
 
     parser.add_argument('-v', '--version', action='version', version='0.3.1')
 
