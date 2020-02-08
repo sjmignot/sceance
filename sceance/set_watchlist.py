@@ -49,7 +49,7 @@ def robert_easter_eggers(original_choice):
             ERROR_MESSAGE['yes_no']
         )
         if res in {'y', 'yes'}:
-            print('Well... Aight...')
+            print('... Aight...')
             return original_choice
     if res in {'n', 'no'}:
         return set_watchlist(no_oscars=True)
