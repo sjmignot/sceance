@@ -1,4 +1,3 @@
-# sceance
 <p align="center">
   <img src="/sceance.svg", alt="sceance logo" />
 </p>
