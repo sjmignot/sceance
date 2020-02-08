@@ -28,7 +28,7 @@ setup(
     download_url='https://github.com/sjmignot/sceance/archive/v_01.tar.gz',
     packages=['sceance'],
     package_dir={'sceance': 'sceance'},
-    package_data={'sceance': ['data/*.txt', 'data/*.ini']},
+    package_data={'sceance': ['data/*.txt', 'data/*.ini', 'data/watchlists/*.txt', 'data/theaters/*.txt']},
     keywords = ['movie theater', 'showtimes', 'selenium', 'movies', 'film'],
     install_requires=[
         'requests>2',
