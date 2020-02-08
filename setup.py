@@ -14,13 +14,13 @@ if sys.version_info[:3] < (3, 0, 0):
 from os import path
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md')) as f:
-    long_description = f.read()
+    long_description = "\n".join(f.readlines()[3:])
 
 setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='0.3.3',
+    version='0.3.5',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',

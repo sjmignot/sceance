@@ -18,7 +18,7 @@ Most dependencies are optional:
 
 - **Firefox or Chrome**: to run the selenium headless browser to find film showings.
 
-- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles.
+- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles. Some default watchlists are also available based on the criterion collection and the oscarn winning films.
 
 ### Download the app
 
@@ -49,7 +49,7 @@ I'm in the process of implementing a cleaner authentication process.
 
 ### Customize theaters.txt
 
-By default, the theaters.txt file contains a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you have to customize the file: you can find it in the data subfolder of the sceance package.
+By default, the theaters file is based on a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you have to customize (or create your own file): you can find it in the `data/theaters` subfolder of the sceance package. If you have a list
 
 ### Customize watchlist.txt
 

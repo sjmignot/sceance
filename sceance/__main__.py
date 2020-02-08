@@ -7,6 +7,7 @@ import argparse
 import os
 from film_to_cal import film_to_cal
 from set_watchlist import set_watchlist
+from set_theaters import set_theaters
 
 # get default settings from settings.ini file
 THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
@@ -67,9 +68,12 @@ def set_up_argparse():
 
     parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"What timezone do you live in? Make sure you provide a valid IANA timezone. This is used by the google calendar api. (default: {settings['timezone']}).")
 
-    parser.add_argument('-v', '--version', action='version', version='0.3.3')
+    parser.add_argument('-v', '--version', action='version', version='0.3.5')
 
     parser.add_argument('-s', '--set-watchlist', action='store_true', help=f"change the default watchlist from {settings['watchlist']}.")
+
+    parser.add_argument('-c', '--set-theaters', action='store_true', help=f"change the default theaters file from {settings['theaters']}.")
+
     return vars(parser.parse_args())
 
 def main():
@@ -80,6 +84,15 @@ def main():
             config.set('DEFAULT', 'watchlist', watchlist)
             with open(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}", 'w') as configfile:
                 config.write(configfile)
+        print(f"watchlist set to {watchlist}")
+        return
+    if args['set_theaters']:
+        theaters =  set_theaters()
+        if theaters:
+            config.set('DEFAULT', 'theaters', theaters)
+            with open(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}", 'w') as configfile:
+                config.write(configfile)
+        print(f"theaters file set to {theaters}")
         return
     args['watchlist'] = settings['watchlist']
     args['theaters'] = settings['theaters']
