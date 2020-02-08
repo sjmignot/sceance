@@ -6,6 +6,7 @@ import configparser
 import argparse
 import os
 from film_to_cal import film_to_cal
+from set_watchlist import set_watchlist
 
 # get default settings from settings.ini file
 THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
@@ -68,10 +69,20 @@ def set_up_argparse():
 
     parser.add_argument('-v', '--version', action='version', version='0.3.3')
 
+    parser.add_argument('-s', '--set-watchlist', action='store_true', help=f"change the default watchlist from {settings['watchlist']}.")
     return vars(parser.parse_args())
 
 def main():
     args = set_up_argparse()
+    if args['set_watchlist']:
+        watchlist = set_watchlist()
+        if watchlist:
+            config.set('DEFAULT', 'watchlist', watchlist)
+            with open(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}", 'w') as configfile:
+                config.write(configfile)
+        return
+    args['watchlist'] = settings['watchlist']
+    args['theaters'] = settings['theaters']
     check_for_google_credentials()
     film_to_cal(args)
 

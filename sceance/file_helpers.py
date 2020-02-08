@@ -7,7 +7,6 @@ set of functions that handle your watchlist and theaters files.
 import os.path
 
 DATA_PATH = "data/"
-WATCHLIST_FILE = "watchlist.txt"
 THEATERS_FILE = "theaters.txt"
 MY_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,9 +14,9 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 # --------------------- #
 # watchlist helpers     #
 # --------------------- #
-def get_watchlist() -> set:
+def get_watchlist(watchlist_name) -> set:
     '''Reads the watchlist file and returns a set of movies with titles lowercased.'''
-    watchlist = os.path.join(MY_PATH, f"{DATA_PATH}{WATCHLIST_FILE}")
+    watchlist = os.path.join(MY_PATH, f"{DATA_PATH}/watchlists/{watchlist_name}")
     assert os.path.exists(watchlist), f"{watchlist} file does not exist."
     with open(watchlist) as f:
         return frozenset((x[:-1]).lower() for x in f.readlines())
@@ -25,9 +24,9 @@ def get_watchlist() -> set:
 # --------------------- #
 # theater helpers       #
 # --------------------- #
-def get_theaters() -> list:
+def get_theaters(theater_name) -> list:
     '''Reads the theaters file and returns a set of theaters.'''
-    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}{THEATERS_FILE}")
+    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}/theaters/{theater_name}")
     assert os.path.exists(theaterlist), f"{theaterlist} file does not exist."
     with open(theaterlist) as f:
         return f.readlines()
