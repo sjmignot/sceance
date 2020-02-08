@@ -57,9 +57,9 @@ def set_theaters():
         ERROR_MESSAGE['theaters_select'].format(max_show=str(len(theaters_files)))
     )
     print()
-    chosen_theaters_file = theaters_files[int(res)-1]
     if res == 'n':
         return None
+    chosen_theaters_file = theaters_files[int(res)-1]
     return chosen_theaters_file
 
 if __name__ == "__main__":
