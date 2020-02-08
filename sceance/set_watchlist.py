@@ -28,14 +28,31 @@ import file_helpers
 THIS_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = '/data'
 WATCHLIST_DIR = '/watchlists'
+OSCARS_WATCHLIST = 'oscar-winners-watchlist.txt'
 
 ERROR_MESSAGE = {
-    "watchlist_select": "response must be an integer in the range 1-{max_show}"
+    "watchlist_select": "response must be an integer in the range 1-{max_show}",
+        "yes_no": "response must be one of the following: 'yes', 'y', 'no', 'n'"
+
 }
 
-def robert_easter_eggers(res):
-    print("really....the oscars watchlist...that's the kinda decision you make?")
-    return res
+def robert_easter_eggers(original_choice):
+    res = get_input(
+        f"Are you sure you want to set your default watchlist to...the oscars..?  [y/n]: ",
+        {'y', 'yes', 'no', 'n'},
+        ERROR_MESSAGE['yes_no']
+    )
+    if res in {'y', 'yes'}:
+        res = get_input(
+            f"The awards that gave Best Picture to Forrest Gump over Pulp fiction..? [y/n]: ",
+            {'y', 'yes', 'no', 'n'},
+            ERROR_MESSAGE['yes_no']
+        )
+        if res in {'y', 'yes'}:
+            print('Well... Aight...')
+            return original_choice
+    if res in {'n', 'no'}:
+        return set_watchlist(no_oscars=True)
 
 def get_watchlists():
     mypath = THIS_DIRECTORY+DATA_DIR+WATCHLIST_DIR
@@ -49,9 +66,10 @@ def get_input(question, response_format, error_message):
             return res
         print(error_message)
 
-def set_watchlist():
+def set_watchlist(no_oscars=False):
     '''for each movie left filtering, asks the user if they want to watch it and provides showtimes to pick from'''
     watchlist_files = get_watchlists()
+    if(no_oscars): watchlist_lists = list(filter(lambda x: x!=OSCARS_WATCHLIST, watchlist_files))
     for i, watchlist in enumerate(watchlist_files, start=1):
         print(f"[{i}]: {watchlist}")
     res = get_input(
@@ -60,11 +78,13 @@ def set_watchlist():
         ERROR_MESSAGE['watchlist_select'].format(max_show=str(len(watchlist_files)))
     )
     print()
+    chosen_watchlist = watchlist_files[int(res)-1]
     if res == 'n':
         return None
-    if res == 'oscar_watchlist.txt':
-        res = robert_easter_eggers(res)
-    return watchlist_files[int(res)-1]
+    if(not no_oscars):
+        if chosen_watchlist == OSCARS_WATCHLIST:
+            chosen_watchlist = robert_easter_eggers(chosen_watchlist)
+    return chosen_watchlist
 
 if __name__ == "__main__":
     set_watchlist()
