@@ -68,7 +68,7 @@ def set_up_argparse():
 
     parser.add_argument('-t', '--timezone', type=valid_timezone, default=settings['timezone'], help=f"What timezone do you live in? Make sure you provide a valid IANA timezone. This is used by the google calendar api. (default: {settings['timezone']}).")
 
-    parser.add_argument('-v', '--version', action='version', version='0.5.2')
+    parser.add_argument('-v', '--version', action='version', version='0.5.4')
 
     parser.add_argument('-s', '--set-watchlist', action='store_true', help=f"change the default watchlist from {settings['watchlist']}.")
 
@@ -84,7 +84,9 @@ def main():
             config.set('DEFAULT', 'watchlist', watchlist)
             with open(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}", 'w') as configfile:
                 config.write(configfile)
-        print(f"watchlist set to {watchlist}")
+            print(f"watchlist set to {watchlist}")
+        else:
+            print(f"watchlist remains unchanged as {settings['watchlist']}")
         return
     if args['set_theaters']:
         theaters =  set_theaters()
@@ -92,7 +94,9 @@ def main():
             config.set('DEFAULT', 'theaters', theaters)
             with open(f"{THIS_DIRECTORY}/data/{SETTINGS_FILE}", 'w') as configfile:
                 config.write(configfile)
-        print(f"theaters file set to {theaters}")
+            print(f"theaters file set to {theaters}")
+        else:
+            print(f"theaters file remains unchanged as {settings['theaters']}")
         return
     args['watchlist'] = settings['watchlist']
     args['theaters'] = settings['theaters']
