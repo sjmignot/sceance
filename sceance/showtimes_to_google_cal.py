@@ -46,7 +46,7 @@ def build_and_add_event(service, film, theater, showtime, timezone):
     }
 
     event = service.events().insert(calendarId='primary', body=event).execute()
-    print('Event created: %s' % (event.get('htmlLink')))
+    print(f"Event created for {film.name} at {theater.name} at {start_time}: {event.get('htmlLink')}")
 
 def get_creds():
     '''gets and returns user credentials either from a token or creates a new token if said token expired'''
@@ -76,5 +76,4 @@ def create_projection_events(projection_list, timezone):
     creds = get_creds()
     service = build('calendar', 'v3', credentials=creds)
     for project in projection_list:
-        print(project)
         build_and_add_event(service, *project, timezone)
