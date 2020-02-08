@@ -86,5 +86,4 @@ def filter_select_showings(showings, workdays, workhours):
     '''main function that calls first filter and then select functions'''
     showings = filter_showings(showings, workdays, workhours)
     selected_showings_dict = select_showings(showings)
-    print(selected_showings_dict)
     return selected_showings_dict

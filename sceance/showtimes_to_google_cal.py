@@ -27,6 +27,25 @@ CRED_FILE = "credentials.json"
 MY_PATH = os.path.abspath(os.path.dirname(__file__))
 DATA_PATH = 'data/'
 
+COLOR = {
+    'purple': '\033[95m',
+    'cyan': '\033[96m',
+    'darkcyan': '\033[36m',
+    'blue': '\033[94m',
+    'green': '\033[92m',
+    'yellow': '\033[93m',
+    'red': '\033[91m',
+    'bold': '\033[1m',
+    'underline': '\033[4m',
+    'end': '\033[0m',
+}
+
+def bold(word):
+    return COLOR['bold']+word+COLOR['end']
+
+def underline(word):
+    return COLOR['underline']+word+COLOR['end']
+
 def build_and_add_event(service, film, theater, showtime, timezone):
     '''builds an event object and adds it to the google calendar'''
     start_time = showtime
@@ -46,7 +65,7 @@ def build_and_add_event(service, film, theater, showtime, timezone):
     }
 
     event = service.events().insert(calendarId='primary', body=event).execute()
-    print(f"Event created for {film.name} at {theater.name} at {start_time}: {event.get('htmlLink')}")
+    print(f"Event created for {underline(film.name)} at {theater.name} at {start_time.strftime('%b %d %Y %H:%M')}:\n{event.get('htmlLink')}")
 
 def get_creds():
     '''gets and returns user credentials either from a token or creates a new token if said token expired'''
