@@ -16,7 +16,7 @@ MY_PATH = os.path.abspath(os.path.dirname(__file__))
 # --------------------- #
 def get_watchlist(watchlist_name) -> set:
     '''Reads the watchlist file and returns a set of movies with titles lowercased.'''
-    watchlist = os.path.join(MY_PATH, f"{DATA_PATH}/watchlists/{watchlist_name}")
+    watchlist = os.path.join(MY_PATH, f"{DATA_PATH}watchlists/{watchlist_name}")
     assert os.path.exists(watchlist), f"{watchlist} file does not exist."
     with open(watchlist) as f:
         return frozenset((x[:-1]).lower() for x in f.readlines())
@@ -26,7 +26,7 @@ def get_watchlist(watchlist_name) -> set:
 # --------------------- #
 def get_theaters(theater_name) -> list:
     '''Reads the theaters file and returns a set of theaters.'''
-    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}/theaters/{theater_name}")
+    theaterlist = os.path.join(MY_PATH, f"{DATA_PATH}theaters/{theater_name}")
     assert os.path.exists(theaterlist), f"{theaterlist} file does not exist."
     with open(theaterlist) as f:
         return f.readlines()
