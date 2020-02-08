@@ -1,4 +1,5 @@
 # sceance
+![sceance logo](/sceance.svg)
 
 Sceance is an application for moviegoers. If you provide it with a list of your favorite cinemas and your movie watchlist, it suggests showtimes, letting you watch your favorite movies in theaters.
 
