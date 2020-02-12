@@ -229,13 +229,13 @@ def get_showings(driver, theaters):
     print(f"Number of films found: {len(film_links)}")
     return movie_showtimes, film_links
 
-def get_watchlist_showings(browser, all_films, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
+def get_watchlist_showings(browser, all_films, theaters_name, watchlist_name, headless: bool = True) -> Dict[Film, List[Tuple[Theater, Showtime]]]:
     '''Main function: starts headless browser, gets showtimes, filmlengths and possible showtimes.'''
     driver = start_browser(browser, headless)
-    theaters = file_helpers.get_theaters()
+    theaters = file_helpers.get_theaters(theaters_name)
     movie_showtimes, film_links = get_showings(driver, theaters)
 
-    watchlist = file_helpers.get_watchlist()
+    watchlist = file_helpers.get_watchlist(watchlist_name)
 
     if not all_films:
         film_links = {k: v for k, v in film_links.items() if k.lower() in watchlist}

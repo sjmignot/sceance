@@ -1,4 +1,6 @@
-# sceance
+<p align="center">
+  <img src="/sceance.svg", alt="sceance logo" />
+</p>
 
 Sceance is an application for moviegoers. If you provide it with a list of your favorite cinemas and your movie watchlist, it suggests showtimes, letting you watch your favorite movies in theaters.
 
@@ -16,7 +18,7 @@ Most dependencies are optional:
 
 - **Firefox or Chrome**: to run the selenium headless browser to find film showings.
 
-- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles.
+- **A Letterboxd account**: sceance currently provides a way of downloading your watchlist from letterboxd provided you store your letterboxd credentials in a .envrc file. This is done with the `update_watchlist.py` file. Otherwise you can manually create a watchlist as a list of newline seperated film titles. Some default watchlists are also available based on the criterion collection and the oscarn winning films.
 
 ### Download the app
 
@@ -47,17 +49,17 @@ I'm in the process of implementing a cleaner authentication process.
 
 ### Customize theaters.txt
 
-By default, the theaters.txt file contains a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you have to customize the file: you can find it in the data subfolder of the sceance package.
+By default, the theaters file is based on a set of my favorite Parisian movie theaters. If you live somewhere else (or want to add your own set of favorite theaters), you can create your own theaters file in the `data/theaters` subfolder of the sceance package. Currently, the only options are Paris, San Francisco, and New York. If you create a good list of theaters for your city, feel free to make a pull request! You can use the `-c --set-theater flag` to change your default theaters file.
 
 ### Customize watchlist.txt
 
-By default, the watchlist.txt contains every film from the criterion collection. However, to get the most from sceance, you should use a personal watchlist.
+By default, the watchlist.txt contains every film from the criterion collection. However, you can create a personal watchlist or pick from some of the defaults. You can set a watchilst using the `-s --set-watchlist flag`.
 
 If you have a letterboxd account, sceance provides a way to automatically download your watchlist. To do this, use the `update_watchlist.py` file (you will need to store your letterboxd credentials in environment variables).
 
 Make sure your watchlist is in English (which is currently the only language that sceance supports). If you want to run sceance without providing a watchlist, you can use the `-a` flag, but this might provide you with a lot of movies.
 
-You can find the `watchlist.txt` file in the data subfolder of the sceance package.
+You can find the default watchlist files in the `data/watchlists` subfolder of the sceance package.
 
 ## How sceance works
 
