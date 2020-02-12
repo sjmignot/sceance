@@ -22,7 +22,7 @@ def valid_timezone(timezone_input):
     with open(f"{THIS_DIRECTORY}/data/{TIMEZONE_FILE}") as f:
         timezones = frozenset([line[:-1] for line in f.readlines()])
     if timezone_input not in timezones:
-        msg = f"{string} is not a IANA timezone"
+        msg = f"{timezone_input} is not a IANA timezone"
         raise argparse.ArgumentTypeError(msg)
     return timezone_input
 
