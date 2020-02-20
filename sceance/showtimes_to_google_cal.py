@@ -81,7 +81,7 @@ def get_creds():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                os.path.join(MY_PATH, f"{DATA_PATH}{CRED_FILE}"), SCOPES
+                os.path.join(MY_PATH, f"{DATA_PATH}{CRED_FILE}"), SCOPES, autogenerate_code_verifier=True
             )
             creds = flow.run_local_server(port=0)
 
