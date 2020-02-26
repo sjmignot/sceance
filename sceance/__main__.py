@@ -2,9 +2,13 @@
 run point of application. Calls films to cal module.
 Will soon allow configuration and downloading of watchlist.
 '''
+# external
 import configparser
 import argparse
 import os
+import signal
+
+#internal
 from film_to_cal import film_to_cal
 from set_watchlist import set_watchlist
 from set_theaters import set_theaters
@@ -76,7 +80,13 @@ def set_up_argparse():
 
     return vars(parser.parse_args())
 
+def sig_interupt(signum, stack):
+    print("\nExiting Program...")
+    quit()
+
 def main():
+    '''main file for getting showings and savaing them to a google calendar'''
+    signal.signal(signal.SIGINT, sig_interupt) #graceful exit on SIGINT
     args = set_up_argparse()
     if args['set_watchlist']:
         watchlist = set_watchlist()
