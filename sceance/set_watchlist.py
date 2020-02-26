@@ -69,7 +69,6 @@ def get_input(question, response_format, error_message):
 def set_watchlist(no_oscars=False):
     '''for each movie left filtering, asks the user if they want to watch it and provides showtimes to pick from'''
     watchlist_files = get_watchlists()
-    print(watchlist_files)
     if(no_oscars): watchlist_files = list(filter(lambda x: x!=OSCARS_WATCHLIST, watchlist_files))
     for i, watchlist in enumerate(watchlist_files, start=1):
         print(f"[{i}]: {watchlist}")
