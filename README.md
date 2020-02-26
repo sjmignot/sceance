@@ -37,15 +37,7 @@ To get information on parameters run:
 sceance -h
 ```
 
-At this point, sceance can suggest films, but is unable to automatically add events to your google calendar.
-
-If you want scence to add films to your calendar, you need to [enable the google calendar API](#enable-the-google-calendar-api).
-
-### Enable the Google calendar API
-
-To enable the Google calendar API, you need to download a credentials file from the following link and place it in the `sceance/sceance/data` subfolder. This file can be downloaded from the [calendar API documentation](https://developers.google.com/calendar/quickstart/python?hl=en#step_1_turn_on_the). Call the file `credentials.json`.
-
-I'm in the process of implementing a cleaner authentication process.
+At this point, sceance can suggest films, which, if approved are automatically added to your google calendar.
 
 ### Customize theaters.txt
 
