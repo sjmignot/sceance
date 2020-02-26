@@ -20,7 +20,7 @@ setup(
     name='sceance',
     author='Samuel Mignot',
     author_email='sjmignot@gmail.com',
-    version='1.0.1',
+    version='1.0.2',
     description='Uses a watchlist and favorite theaters to suggest film screenings.',
     long_description=long_description,
     long_description_content_type='text/markdown',
