@@ -59,7 +59,7 @@ Sceance uses selenium to gather showtime information for every theater in your t
 
 For all the films that remain, you are prompted with a list of showtimes and can select one showtime per film.
 
-This showtime is then automatically added to your calendar using the google calendar api. Note, for now this requires that you [enable the Google calendar API](#enable-the-google-calendar-api): doing this allows sceance to write to your calendar.
+This showtime is then automatically added to your calendar using the google calendar api.
 
 ## Contribution Guidelines
 
