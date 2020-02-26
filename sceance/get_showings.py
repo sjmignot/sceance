@@ -34,7 +34,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
 
-from progress.bar import FillingSquaresBar
+from progress.bar import Bar
 
 # internal
 import file_helpers
@@ -142,7 +142,7 @@ def get_movie_details(film_links, browser):
     '''Takes a dictionary of film links and gets movie lengths if they haven't already been saved.'''
     film_details_dict = {}
     driver = start_browser(browser)
-    with FillingSquaresBar('Gathering Film Details', max=len(film_links), suffix="%(index)d/%(max)d") as bar:
+    with Bar('Gathering Film Details', max=len(film_links), suffix="%(index)d/%(max)d") as bar:
         for k, url in film_links.items():
             driver.get(url)
             film_detail_default = FILM_DETAIL_SEP.join(["not specified", "not specified", "1h 50m"])
@@ -199,7 +199,7 @@ def get_showings(driver, theaters):
     theater_search_placeholder = "https://www.google.com/search?q={theater_name}+showtimes&lr=lang_en&hl=en"
     movie_showtimes = {}
     film_links = {}
-    with FillingSquaresBar('Processing Theaters', max=len(theaters), suffix="%(index)d/%(max)d") as bar:
+    with Bar('Processing Theaters', max=len(theaters), suffix="%(index)d/%(max)d") as bar:
         for theater in theaters:
             url = theater_search_placeholder.format(theater_name=(theater[:-1].replace(" ", "+")))
             driver.get(url)
